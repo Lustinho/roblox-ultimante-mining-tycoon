@@ -1,4 +1,3 @@
-```lua
 -- Gui to Lua
 -- Version: 3.2
 
@@ -802,59 +801,22 @@ local function ETDSH_fake_script() -- resetc4button.mobile reset c4 button
 	local Players = game:GetService("Players")
 	local UserInputService = game:GetService("UserInputService")
 	local VirtualInputManager = game:GetService("VirtualInputManager")
-	local RunService = game:GetService("RunService")
-	local Workspace = game:GetService("Workspace")
+	local camera = workspace.CurrentCamera
 	
 	local player = Players.LocalPlayer
 	local button = script.Parent  -- "Reset C4 Button"
-	local camera = Workspace.CurrentCamera
 	local character = player.Character or player.CharacterAdded:Wait()
 	
 	local savedCFrame
 	local savedCameraCFrame
 	local savedWalkSpeed
 	
-	local function setControlModeToJoystick()
-		local successMode, errMode = pcall(function()
-			local playerScripts = player:WaitForChild("PlayerScripts", 5)
-			local controlModule = playerScripts:FindFirstChild("ControlModule")
-			if controlModule then
-				local controlState = controlModule:GetAttribute("ControlState") or "Keyboard"
-				if controlState ~= "Joystick" then
-					controlModule:SetAttribute("ControlState", "Joystick")
-					warn("Forced ControlState to Joystick")
-				end
-			else
-				warn("ControlModule not found! Attempting settings click simulation.")
-				-- Tentar simular clique na interface de configurações
-				local successClick, errClick = pcall(function()
-					VirtualInputManager:SendTouchEvent(1, Enum.UserInputState.Begin, Vector2.new(0.95, 0.05)) -- Botão de configurações (canto superior direito)
-					task.wait(0.1)
-					VirtualInputManager:SendTouchEvent(1, Enum.UserInputState.End, Vector2.new(0.95, 0.05))
-					task.wait(0.5)
-					VirtualInputManager:SendTouchEvent(2, Enum.UserInputState.Begin, Vector2.new(0.5, 0.6)) -- Selecionar "Joystick" no menu
-					task.wait(0.1)
-					VirtualInputManager:SendTouchEvent(2, Enum.UserInputState.End, Vector2.new(0.5, 0.6))
-				end)
-				if not successClick then
-					warn("Failed to simulate settings click: " .. tostring(errClick))
-				end
-			end
-		end)
-		if not successMode then
-			warn("Failed to set ControlState: " .. tostring(errMode))
-		end
-	end
-	
 	local function resetC4()
 		character = player.Character or player.CharacterAdded:Wait()
 		local root = character:FindFirstChild("HumanoidRootPart")
 		local humanoid = character:FindFirstChildOfClass("Humanoid")
 	
-		if not (root and humanoid) then
-			warn("Humanoid or HumanoidRootPart not found for C4 reset!")
-			return
-		end
+		if not (root and humanoid) then return end
 	
 		-- Save position, camera, walkspeed
 		savedCFrame = root.CFrame
@@ -866,91 +828,36 @@ local function ETDSH_fake_script() -- resetc4button.mobile reset c4 button
 	
 		-- Wait for new character
 		player.CharacterAdded:Wait()
-		task.wait(3) -- Aumentado para 3 segundos para inicialização completa no mobile
+		task.wait(0.2)
 	
 		character = player.Character or player.CharacterAdded:Wait()
-		local newRoot = character:WaitForChild("HumanoidRootPart", 5)
-		local newHumanoid = character:WaitForChild("Humanoid", 5)
+		local newRoot = character:WaitForChild("HumanoidRootPart")
+		local newHumanoid = character:WaitForChild("Humanoid")
 	
-		if newRoot and newHumanoid then
-			-- Restore data
-			newRoot.CFrame = savedCFrame
-			newHumanoid.WalkSpeed = savedWalkSpeed
-			
-			-- Forçar câmera imediatamente
-			camera.CameraType = Enum.CameraType.Custom
-			camera.CameraSubject = newHumanoid
-			camera.CFrame = savedCameraCFrame
-			
-			-- Loop para garantir que a câmera não seja sobrescrita
-			local cameraFixConnection
-			local fixAttempts = 0
-			local maxFixAttempts = 90 -- Aproximadamente 3 segundos a 30 FPS
-			cameraFixConnection = RunService.RenderStepped:Connect(function()
-				if fixAttempts >= maxFixAttempts then
-					cameraFixConnection:Disconnect()
-					return
-				end
-				if camera.CameraType ~= Enum.CameraType.Custom or camera.CameraSubject ~= newHumanoid then
-					camera.CameraType = Enum.CameraType.Custom
-					camera.CameraSubject = newHumanoid
-					camera.CFrame = savedCameraCFrame
-				end
-				fixAttempts = fixAttempts + 1
-			end)
-			
-			-- Forçar estado de movimento para ativar controles mobile
-			newHumanoid:ChangeState(Enum.HumanoidStateType.Running)
-			
-			-- Forçar modo de movimento para "Joystick"
-			setControlModeToJoystick()
-			
-			-- Simular toque para "acordar" joystick mobile
-			local successTouch, errTouch = pcall(function()
-				VirtualInputManager:SendTouchEvent(1, Enum.UserInputState.Begin, Vector2.new(0.4, 0.85))
-				task.wait(0.1)
-				VirtualInputManager:SendTouchEvent(1, Enum.UserInputState.End, Vector2.new(0.4, 0.85))
-			end)
-			if not successTouch then
-				warn("Failed to simulate touch: " .. tostring(errTouch))
-			end
-			
-			-- Simulate pressing "2"
-			task.wait(0.5)
-			local successKey, errKey = pcall(function()
-				VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Two, false, game)
-				task.wait(0.1)
-				VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Two, false, game)
-			end)
-			if not successKey then
-				warn("Failed to simulate key press: " .. tostring(errKey))
-			else
-				warn("C4 reset completed successfully")
-			end
-		else
-			warn("Failed to restore character after C4 reset!")
-		end
+		-- Restore data
+		newRoot.CFrame = savedCFrame
+		newHumanoid.WalkSpeed = savedWalkSpeed
+		camera.CFrame = savedCameraCFrame
+	
+		-- Simulate pressing "2"
+		task.wait(0.2)
+		VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Two, false, game)
+		VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Two, false, game)
 	end
 	
 	-- 🔘 When player clicks the GUI button (mobile or PC)
 	button.MouseButton1Click:Connect(function()
-		local success, err = pcall(resetC4)
-		if not success then
-			warn("C4 reset failed: " .. tostring(err))
-		end
+		resetC4()
 	end)
 	
 	-- 🖱️ When PC player presses "F"
 	UserInputService.InputBegan:Connect(function(input, gameProcessed)
 		if gameProcessed then return end
 		if input.KeyCode == Enum.KeyCode.F then
-			local success, err = pcall(resetC4)
-			if not success then
-				warn("C4 reset failed: " .. tostring(err))
-			end
+			resetC4()
+			print("Triggered")
 		end
 	end)
 	
 end
 coroutine.wrap(ETDSH_fake_script)()
-```

@@ -2,7 +2,7 @@
 -- Mining GUI
 -- Version: 3.5 (Updated for Ultimate Mining Tycoon v0.3.5)
 
--- Instances:
+-- Instances (mantidos iguais ao código anterior):
 
 local ScreenGui = Instance.new("ScreenGui")
 local OverFrame = Instance.new("Frame")
@@ -34,7 +34,7 @@ local UICorner_10 = Instance.new("UICorner")
 local resetc4button = Instance.new("TextButton")
 local UICorner_11 = Instance.new("UICorner")
 
--- Properties:
+-- Properties (mantidos iguais ao código anterior):
 
 ScreenGui.Name = "MiningGUI"
 ScreenGui.Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui", 5)
@@ -310,7 +310,7 @@ resetc4button.TextWrapped = true
 UICorner_11.CornerRadius = UDim.new(0, 3)
 UICorner_11.Parent = resetc4button
 
--- Scripts:
+-- Scripts (mantidos iguais, exceto ETDSH_fake_script):
 
 local function INPMCR_fake_script() -- Showhide.show/hide button 
 	local script = Instance.new('LocalScript', Showhide)
@@ -333,6 +333,7 @@ local function INPMCR_fake_script() -- Showhide.show/hide button
 		button.Text = targetFrame.Visible and "↓" or "↑"
 	end)
 end
+coroutine.wrap(INPMCR_fake_script)()
 
 local function PIZNK_fake_script() -- OverFrame.draggable 
 	local script = Instance.new('LocalScript', OverFrame)
@@ -377,6 +378,7 @@ local function PIZNK_fake_script() -- OverFrame.draggable
 		end
 	end)
 end
+coroutine.wrap(PIZNK_fake_script)()
 
 local function UKNKUIM_fake_script() -- sellore.sell ore tp 
 	local script = Instance.new('LocalScript', sellore)
@@ -468,6 +470,7 @@ local function UKNKUIM_fake_script() -- sellore.sell ore tp
 		end
 	end)
 end
+coroutine.wrap(UKNKUIM_fake_script)()
 
 local function FULE_fake_script() -- mine.mine tp 
 	local script = Instance.new('LocalScript', mine)
@@ -487,6 +490,7 @@ local function FULE_fake_script() -- mine.mine tp
 		end
 	end)
 end
+coroutine.wrap(FULE_fake_script)()
 
 local function KKQXR_fake_script() -- tycoon.tycoon tp 
 	local script = Instance.new('LocalScript', tycoon)
@@ -532,6 +536,7 @@ local function KKQXR_fake_script() -- tycoon.tycoon tp
 		end
 	end)
 end
+coroutine.wrap(KKQXR_fake_script)()
 
 local function TTDVCH_fake_script() -- shop.shop tp 
 	local script = Instance.new('LocalScript', shop)
@@ -551,6 +556,7 @@ local function TTDVCH_fake_script() -- shop.shop tp
 		end
 	end)
 end
+coroutine.wrap(TTDVCH_fake_script)()
 
 local function SFJYWQ_fake_script() -- TextBox.WalkSpeedScript 
 	local script = Instance.new('LocalScript', TextBox)
@@ -596,6 +602,7 @@ local function SFJYWQ_fake_script() -- TextBox.WalkSpeedScript
 		end
 	end)
 end
+coroutine.wrap(SFJYWQ_fake_script)()
 
 local function RTCZIU_fake_script() -- blocksEspButton.blocks esp script 
 	local script = Instance.new('LocalScript', blocksEspButton)
@@ -773,6 +780,7 @@ local function RTCZIU_fake_script() -- blocksEspButton.blocks esp script
 		setupExistingBlocks()
 	end)
 end
+coroutine.wrap(RTCZIU_fake_script)()
 
 local function OQBZD_fake_script() -- Frame.right-shift 
 	local script = Instance.new('LocalScript', Frame)
@@ -792,6 +800,7 @@ local function OQBZD_fake_script() -- Frame.right-shift
 	
 	UserInputService.InputBegan:Connect(toggleFrameVisibility)
 end
+coroutine.wrap(OQBZD_fake_script)()
 
 local function VIJPO_fake_script() -- c4shop.c4 shop tp 
 	local script = Instance.new('LocalScript', c4shop)
@@ -811,6 +820,7 @@ local function VIJPO_fake_script() -- c4shop.c4 shop tp
 		end
 	end)
 end
+coroutine.wrap(VIJPO_fake_script)()
 
 local function ETDSH_fake_script() -- resetc4button.mobile reset c4 button 
 	local script = Instance.new('LocalScript', resetc4button)
@@ -846,7 +856,7 @@ local function ETDSH_fake_script() -- resetc4button.mobile reset c4 button
 		humanoid.Health = 0
 	
 		player.CharacterAdded:Wait()
-		task.wait(2) -- Aumentado para 2 segundos para inicialização completa no mobile
+		task.wait(1) -- Aumentado para garantir inicialização no mobile
 	
 		character = player.Character or player.CharacterAdded:Wait()
 		local newRoot = character:WaitForChild("HumanoidRootPart", 5)
@@ -864,7 +874,7 @@ local function ETDSH_fake_script() -- resetc4button.mobile reset c4 button
 			-- Loop para garantir que a câmera não seja sobrescrita
 			local cameraFixConnection
 			local fixAttempts = 0
-			local maxFixAttempts = 60 -- Aproximadamente 2 segundos a 30 FPS
+			local maxFixAttempts = 30 -- Aproximadamente 1 segundo a 30 FPS
 			cameraFixConnection = RunService.RenderStepped:Connect(function()
 				if fixAttempts >= maxFixAttempts then
 					cameraFixConnection:Disconnect()
@@ -878,49 +888,14 @@ local function ETDSH_fake_script() -- resetc4button.mobile reset c4 button
 				fixAttempts = fixAttempts + 1
 			end)
 			
-			-- Forçar estado de movimento para ativar controles mobile
-			newHumanoid:ChangeState(Enum.HumanoidStateType.Running)
-			
-			-- Tentar forçar modo de movimento "Padrão (Direcional Analógico Dinâmico)"
-			local successMode, errMode = pcall(function()
-				local playerScripts = player:WaitForChild("PlayerScripts", 5)
-				local controlModule = playerScripts:FindFirstChild("ControlModule")
-				if controlModule then
-					-- Tentar forçar o modo de movimento para "Joystick"
-					local controlState = controlModule:GetAttribute("ControlState") or "Keyboard"
-					if controlState ~= "Joystick" then
-						controlModule:SetAttribute("ControlState", "Joystick")
-						warn("Forced ControlState to Joystick")
-					end
-				else
-					warn("ControlModule not found!")
-				end
-			end)
-			if not successMode then
-				warn("Failed to set ControlState: " .. tostring(errMode))
-			end
-			
-			-- Simular toque para "acordar" joystick mobile
-			task.wait(0.2)
-			local touchId = 1
-			local successTouch, errTouch = pcall(function()
-				VirtualInputManager:SendTouchEvent(touchId, Enum.UserInputState.Begin, Vector2.new(0.5, 0.8))
-				task.wait(0.1)
-				VirtualInputManager:SendTouchEvent(touchId, Enum.UserInputState.End, Vector2.new(0.5, 0.8))
-			end)
-			if not successTouch then
-				warn("Failed to simulate touch: " .. tostring(errTouch))
-			end
-			
-			-- Delay antes da tecla "2"
-			task.wait(0.5)
-			local successKey, errKey = pcall(function()
+			task.wait(0.5) -- Delay antes da tecla
+			local success, err = pcall(function()
 				VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Two, false, game)
 				task.wait(0.1)
 				VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Two, false, game)
 			end)
-			if not successKey then
-				warn("Failed to simulate key press: " .. tostring(errKey))
+			if not success then
+				warn("Failed to simulate key press: " .. tostring(err))
 			else
 				warn("C4 reset completed successfully")
 			end
@@ -946,32 +921,8 @@ local function ETDSH_fake_script() -- resetc4button.mobile reset c4 button
 		end
 	end)
 end
+coroutine.wrap(ETDSH_fake_script)()
 
--- Inicialização segura dos scripts
-local function initializeScripts()
-	local success, err = pcall(function()
-		coroutine.wrap(INPMCR_fake_script)()
-		coroutine.wrap(PIZNK_fake_script)()
-		coroutine.wrap(UKNKUIM_fake_script)()
-		coroutine.wrap(FULE_fake_script)()
-		coroutine.wrap(KKQXR_fake_script)()
-		coroutine.wrap(TTDVCH_fake_script)()
-		coroutine.wrap(SFJYWQ_fake_script)()
-		coroutine.wrap(RTCZIU_fake_script)()
-		coroutine.wrap(OQBZD_fake_script)()
-		coroutine.wrap(VIJPO_fake_script)()
-		coroutine.wrap(ETDSH_fake_script)()
-	end)
-	if not success then
-		warn("Failed to initialize scripts: " .. tostring(err))
-	end
-end
-
--- Executar inicialização com verificação de erros
-local successInit, errInit = pcall(initializeScripts)
-if successInit then
-	warn("Mining GUI loaded successfully at: " .. os.date())
-else
-	warn("Failed to load Mining GUI: " .. tostring(errInit))
-end
+-- Debug inicial
+warn("Mining GUI loaded at: " .. os.date())
 ```

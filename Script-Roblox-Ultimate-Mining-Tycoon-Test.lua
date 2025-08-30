@@ -2,6 +2,16 @@
 -- Gui to Lua
 -- Version: 3.2
 
+-- Wait for game to load
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+task.wait(5) -- Delay to ensure PlayerGui is available
+local PlayerGui = player:WaitForChild("PlayerGui", 10)
+if not PlayerGui then
+    warn("PlayerGui not found after 10 seconds!")
+    return
+end
+
 -- Instances:
 
 local ScreenGui = Instance.new("ScreenGui")
@@ -36,7 +46,7 @@ local UICorner_11 = Instance.new("UICorner")
 
 --Properties:
 
-ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.Parent = PlayerGui
 ScreenGui.ResetOnSpawn = false
 
 OverFrame.Name = "OverFrame"
@@ -801,7 +811,6 @@ local function ETDSH_fake_script() -- resetc4button.mobile reset c4 button
 
 	local Players = game:GetService("Players")
 	local UserInputService = game:GetService("UserInputService")
-	local VirtualInputManager = game:GetService("VirtualInputManager")
 	local Workspace = game:GetService("Workspace")
 	local RunService = game:GetService("RunService")
 	
@@ -870,30 +879,18 @@ local function ETDSH_fake_script() -- resetc4button.mobile reset c4 button
 			-- Force movement state to activate mobile controls
 			newHumanoid:ChangeState(Enum.HumanoidStateType.Running)
 			
-			-- Simulate touch to activate joystick
-			if VirtualInputManager then
-				VirtualInputManager:SendTouchEvent(1, Enum.UserInputState.Begin, Vector2.new(0.4, 0.85))
-				task.wait(0.1)
-				VirtualInputManager:SendTouchEvent(1, Enum.UserInputState.End, Vector2.new(0.4, 0.85))
-			end
-			
-			-- Simulate click on settings to force joystick mode
-			if VirtualInputManager then
-				VirtualInputManager:SendTouchEvent(2, Enum.UserInputState.Begin, Vector2.new(0.95, 0.05)) -- Settings button
-				task.wait(0.1)
-				VirtualInputManager:SendTouchEvent(2, Enum.UserInputState.End, Vector2.new(0.95, 0.05))
-				task.wait(0.5)
-				VirtualInputManager:SendTouchEvent(3, Enum.UserInputState.Begin, Vector2.new(0.5, 0.6)) -- Select joystick
-				task.wait(0.1)
-				VirtualInputManager:SendTouchEvent(3, Enum.UserInputState.End, Vector2.new(0.5, 0.6))
-			end
-			
-			-- Simulate pressing "2" to equip C4
-			task.wait(0.5)
-			if VirtualInputManager then
-				VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Two, false, game)
-				task.wait(0.1)
-				VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Two, false, game)
+			-- Simulate key press for "2" to equip C4 (avoiding VirtualInputManager)
+			local success, err = pcall(function()
+				local backpack = player:WaitForChild("Backpack", 5)
+				local tool = backpack:FindFirstChildOfClass("Tool")
+				if tool then
+					newHumanoid:EquipTool(tool)
+				else
+					warn("No tool found in Backpack to equip!")
+				end
+			end)
+			if not success then
+				warn("Failed to equip tool: " .. tostring(err))
 			end
 			
 			warn("C4 reset completed")
@@ -904,14 +901,20 @@ local function ETDSH_fake_script() -- resetc4button.mobile reset c4 button
 	
 	-- When player clicks the GUI button (mobile or PC)
 	button.MouseButton1Click:Connect(function()
-		resetC4()
+		local success, err = pcall(resetC4)
+		if not success then
+			warn("C4 reset failed: " .. tostring(err))
+		end
 	end)
 	
 	-- When PC player presses "F"
 	UserInputService.InputBegan:Connect(function(input, gameProcessed)
 		if gameProcessed then return end
 		if input.KeyCode == Enum.KeyCode.F then
-			resetC4()
+			local success, err = pcall(resetC4)
+			if not success then
+				warn("C4 reset failed: " .. tostring(err))
+			end
 		end
 	end)
 	

@@ -1,8 +1,8 @@
 ```lua
--- Mining GUI
--- Version: 3.5 (Updated for Ultimate Mining Tycoon v0.3.5)
+-- Gui to Lua
+-- Version: 3.2
 
--- Instances (mantidos iguais ao código anterior):
+-- Instances:
 
 local ScreenGui = Instance.new("ScreenGui")
 local OverFrame = Instance.new("Frame")
@@ -34,18 +34,10 @@ local UICorner_10 = Instance.new("UICorner")
 local resetc4button = Instance.new("TextButton")
 local UICorner_11 = Instance.new("UICorner")
 
--- Properties (mantidos iguais ao código anterior):
+--Properties:
 
-ScreenGui.Name = "MiningGUI"
-ScreenGui.Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui", 5)
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 ScreenGui.ResetOnSpawn = false
-ScreenGui.Enabled = true
-
-if syn and syn.protect_gui then
-    syn.protect_gui(ScreenGui)
-elseif protectgui then
-    protectgui(ScreenGui)
-end
 
 OverFrame.Name = "OverFrame"
 OverFrame.Parent = ScreenGui
@@ -67,14 +59,14 @@ TextLabel.BorderSizePixel = 0
 TextLabel.Position = UDim2.new(0, 0, -0.0238095243, 0)
 TextLabel.Size = UDim2.new(0, 231, 0, 36)
 TextLabel.ZIndex = 3
-TextLabel.Font = Enum.Font.Gotham
-TextLabel.Text = "Mining GUI"
+TextLabel.Font = Enum.Font.SourceSans
+TextLabel.Text = "UMT GUI"
 TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 TextLabel.TextScaled = true
 TextLabel.TextSize = 14.000
 TextLabel.TextWrapped = true
 
-Showhide.Name = "Showhide"
+Showhide.Name = "Show/hide"
 Showhide.Parent = OverFrame
 Showhide.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Showhide.BackgroundTransparency = 1.000
@@ -83,8 +75,8 @@ Showhide.BorderSizePixel = 0
 Showhide.Position = UDim2.new(0.870129883, 0, -0.0476190485, 0)
 Showhide.Size = UDim2.new(0, 30, 0, 30)
 Showhide.ZIndex = 4
-Showhide.Font = Enum.Font.Gotham
-Showhide.Text = "↓"
+Showhide.Font = Enum.Font.SourceSans
+Showhide.Text = ""
 Showhide.TextColor3 = Color3.fromRGB(255, 255, 255)
 Showhide.TextScaled = true
 Showhide.TextSize = 14.000
@@ -107,7 +99,7 @@ Madebywoxo.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Madebywoxo.BorderSizePixel = 0
 Madebywoxo.Position = UDim2.new(0.0303030312, 0, 0.917876959, 0)
 Madebywoxo.Size = UDim2.new(0, 129, 0, 32)
-Madebywoxo.Font = Enum.Font.Gotham
+Madebywoxo.Font = Enum.Font.Unknown
 Madebywoxo.Text = "Made By WoXo"
 Madebywoxo.TextColor3 = Color3.fromRGB(255, 255, 255)
 Madebywoxo.TextScaled = true
@@ -122,21 +114,21 @@ umtgui.BorderColor3 = Color3.fromRGB(0, 0, 0)
 umtgui.BorderSizePixel = 0
 umtgui.Position = UDim2.new(0.095238097, 0, -0.00238474435, 0)
 umtgui.Size = UDim2.new(0, 187, 0, 44)
-umtgui.Font = Enum.Font.Gotham
-umtgui.Text = "Mining GUI"
+umtgui.Font = Enum.Font.Unknown
+umtgui.Text = "UMT GUI"
 umtgui.TextColor3 = Color3.fromRGB(255, 255, 255)
 umtgui.TextScaled = true
 umtgui.TextSize = 14.000
 umtgui.TextWrapped = true
 
-sellore.Name = "sellore"
+sellore.Name = "sell ore"
 sellore.Parent = Frame
 sellore.BackgroundColor3 = Color3.fromRGB(52, 52, 52)
 sellore.BorderColor3 = Color3.fromRGB(0, 0, 0)
 sellore.BorderSizePixel = 0
 sellore.Position = UDim2.new(0.0303030312, 0, 0.107231922, 0)
 sellore.Size = UDim2.new(0, 216, 0, 23)
-sellore.Font = Enum.Font.Gotham
+sellore.Font = Enum.Font.Unknown
 sellore.Text = "Sell Ores"
 sellore.TextColor3 = Color3.fromRGB(255, 255, 255)
 sellore.TextScaled = true
@@ -153,7 +145,7 @@ mine.BorderColor3 = Color3.fromRGB(0, 0, 0)
 mine.BorderSizePixel = 0
 mine.Position = UDim2.new(0.0303030312, 0, 0.179551125, 0)
 mine.Size = UDim2.new(0, 216, 0, 23)
-mine.Font = Enum.Font.Gotham
+mine.Font = Enum.Font.Unknown
 mine.Text = "Goto Mine"
 mine.TextColor3 = Color3.fromRGB(255, 255, 255)
 mine.TextScaled = true
@@ -172,7 +164,7 @@ tycoon.BorderColor3 = Color3.fromRGB(0, 0, 0)
 tycoon.BorderSizePixel = 0
 tycoon.Position = UDim2.new(0.0303030312, 0, 0.251870334, 0)
 tycoon.Size = UDim2.new(0, 216, 0, 23)
-tycoon.Font = Enum.Font.Gotham
+tycoon.Font = Enum.Font.Unknown
 tycoon.Text = "Goto Tycoon"
 tycoon.TextColor3 = Color3.fromRGB(255, 255, 255)
 tycoon.TextScaled = true
@@ -189,11 +181,11 @@ shop.BorderColor3 = Color3.fromRGB(0, 0, 0)
 shop.BorderSizePixel = 0
 shop.Position = UDim2.new(0.0299999677, 0, 0.326112211, 0)
 shop.Size = UDim2.new(0, 216, 0, 23)
-shop.Font = Enum.Font.Gotham
+shop.Font = Enum.Font.Unknown
 shop.Text = "Goto Shop"
 shop.TextColor3 = Color3.fromRGB(255, 255, 255)
 shop.TextScaled = true
-shop.TextSize = 14.000
+shop.TextSize = 22.000
 shop.TextWrapped = true
 
 UICorner_7.CornerRadius = UDim.new(0, 3)
@@ -205,8 +197,8 @@ TextBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
 TextBox.BorderSizePixel = 0
 TextBox.Position = UDim2.new(0.796536803, 0, 0.480520606, 0)
 TextBox.Size = UDim2.new(0, 33, 0, 31)
-TextBox.Font = Enum.Font.Gotham
-TextBox.Text = "16"
+TextBox.Font = Enum.Font.Unknown
+TextBox.Text = "100"
 TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 TextBox.TextScaled = true
 TextBox.TextSize = 14.000
@@ -223,7 +215,7 @@ walkspeed.BorderColor3 = Color3.fromRGB(0, 0, 0)
 walkspeed.BorderSizePixel = 0
 walkspeed.Position = UDim2.new(0.0432900451, 0, 0.480520606, 0)
 walkspeed.Size = UDim2.new(0, 162, 0, 31)
-walkspeed.Font = Enum.Font.Gotham
+walkspeed.Font = Enum.Font.Unknown
 walkspeed.Text = "Walkspeed | 1 - 100"
 walkspeed.TextColor3 = Color3.fromRGB(255, 255, 255)
 walkspeed.TextScaled = true
@@ -237,16 +229,16 @@ blocksEspButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
 blocksEspButton.BorderSizePixel = 0
 blocksEspButton.Position = UDim2.new(0.0303030312, 0, 0.576627135, 0)
 blocksEspButton.Size = UDim2.new(0, 216, 0, 22)
-blocksEspButton.Font = Enum.Font.Gotham
-blocksEspButton.Text = "Blocks ESP: OFF"
+blocksEspButton.Font = Enum.Font.Unknown
+blocksEspButton.Text = ""
 blocksEspButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-blocksEspButton.TextSize = 14.000
+blocksEspButton.TextSize = 17.000
 blocksEspButton.TextWrapped = true
 
 UICorner_9.CornerRadius = UDim.new(0, 3)
 UICorner_9.Parent = blocksEspButton
 
-ftoresetc4cd.Name = "ftoresetc4cd"
+ftoresetc4cd.Name = "f to reset c4 cd"
 ftoresetc4cd.Parent = Frame
 ftoresetc4cd.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 ftoresetc4cd.BackgroundTransparency = 1.000
@@ -254,14 +246,14 @@ ftoresetc4cd.BorderColor3 = Color3.fromRGB(0, 0, 0)
 ftoresetc4cd.BorderSizePixel = 0
 ftoresetc4cd.Position = UDim2.new(0.0259740259, 0, 0.646949053, 0)
 ftoresetc4cd.Size = UDim2.new(0, 216, 0, 48)
-ftoresetc4cd.Font = Enum.Font.Gotham
+ftoresetc4cd.Font = Enum.Font.Unknown
 ftoresetc4cd.Text = "- Press F To Reset C4 Cooldown (mined ores lost)"
 ftoresetc4cd.TextColor3 = Color3.fromRGB(255, 255, 255)
 ftoresetc4cd.TextScaled = true
-ftoresetc4cd.TextSize = 14.000
+ftoresetc4cd.TextSize = 17.000
 ftoresetc4cd.TextWrapped = true
 
-shifttohide.Name = "shifttohide"
+shifttohide.Name = "shift to hide"
 shifttohide.Parent = Frame
 shifttohide.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 shifttohide.BackgroundTransparency = 1.000
@@ -269,62 +261,58 @@ shifttohide.BorderColor3 = Color3.fromRGB(0, 0, 0)
 shifttohide.BorderSizePixel = 0
 shifttohide.Position = UDim2.new(0.0259740259, 0, 0.78501302, 0)
 shifttohide.Size = UDim2.new(0, 216, 0, 34)
-shifttohide.Font = Enum.Font.Gotham
+shifttohide.Font = Enum.Font.Unknown
 shifttohide.Text = "- Press Shift To Show/Hide GUI"
 shifttohide.TextColor3 = Color3.fromRGB(255, 255, 255)
 shifttohide.TextScaled = true
-shifttohide.TextSize = 14.000
+shifttohide.TextSize = 17.000
 shifttohide.TextWrapped = true
 
-c4shop.Name = "c4shop"
+c4shop.Name = "c4 shop"
 c4shop.Parent = Frame
 c4shop.BackgroundColor3 = Color3.fromRGB(52, 52, 52)
 c4shop.BorderColor3 = Color3.fromRGB(0, 0, 0)
 c4shop.BorderSizePixel = 0
 c4shop.Position = UDim2.new(0.0299999677, 0, 0.400091827, 0)
 c4shop.Size = UDim2.new(0, 216, 0, 23)
-c4shop.Font = Enum.Font.Gotham
+c4shop.Font = Enum.Font.Unknown
 c4shop.Text = "Goto C4 Shop"
 c4shop.TextColor3 = Color3.fromRGB(255, 255, 255)
 c4shop.TextScaled = true
-c4shop.TextSize = 14.000
+c4shop.TextSize = 22.000
 c4shop.TextWrapped = true
 
 UICorner_10.CornerRadius = UDim.new(0, 3)
 UICorner_10.Parent = c4shop
 
-resetc4button.Name = "resetc4button"
+resetc4button.Name = "reset c4 button"
 resetc4button.Parent = Frame
 resetc4button.BackgroundColor3 = Color3.fromRGB(52, 52, 52)
 resetc4button.BorderColor3 = Color3.fromRGB(0, 0, 0)
 resetc4button.BorderSizePixel = 0
 resetc4button.Position = UDim2.new(0.0299999677, 0, 0.646949053, 0)
 resetc4button.Size = UDim2.new(0, 216, 0, 47)
-resetc4button.Font = Enum.Font.Gotham
-resetc4button.Text = "Mobile Reset C4"
+resetc4button.Font = Enum.Font.SourceSans
+resetc4button.Text = "Mobile reset c4 button"
 resetc4button.TextColor3 = Color3.fromRGB(255, 255, 255)
 resetc4button.TextScaled = true
-resetc4button.TextSize = 14.000
+resetc4button.TextSize = 22.000
 resetc4button.TextWrapped = true
 
 UICorner_11.CornerRadius = UDim.new(0, 3)
 UICorner_11.Parent = resetc4button
 
--- Scripts (mantidos iguais, exceto ETDSH_fake_script):
+-- Scripts:
 
 local function INPMCR_fake_script() -- Showhide.show/hide button 
 	local script = Instance.new('LocalScript', Showhide)
 
 	local button = script.Parent
 	local overframe = button.Parent
-	local gui = overframe.Parent
-	local targetFrame = gui:WaitForChild("Frame", 5)
+	local gui = overframe.Parent -- Assuming Overframe and Frame are siblings
+	local targetFrame = gui:WaitForChild("Frame") -- The frame to show/hide
 	
-	if not targetFrame then
-		warn("Frame not found in GUI!")
-		return
-	end
-	
+	-- Set initial state
 	targetFrame.Visible = true
 	button.Text = "↓"
 	
@@ -332,20 +320,15 @@ local function INPMCR_fake_script() -- Showhide.show/hide button
 		targetFrame.Visible = not targetFrame.Visible
 		button.Text = targetFrame.Visible and "↓" or "↑"
 	end)
+	
 end
 coroutine.wrap(INPMCR_fake_script)()
-
 local function PIZNK_fake_script() -- OverFrame.draggable 
 	local script = Instance.new('LocalScript', OverFrame)
 
 	local dragFrame = script.Parent
 	local gui = dragFrame.Parent
-	local linkedFrame = gui:WaitForChild("Frame", 5)
-	
-	if not linkedFrame then
-		warn("Linked Frame not found!")
-		return
-	end
+	local linkedFrame = gui:WaitForChild("Frame") -- This is the second frame to move together
 	
 	local dragging = false
 	local dragStart, startPos
@@ -377,21 +360,17 @@ local function PIZNK_fake_script() -- OverFrame.draggable
 			update(input)
 		end
 	end)
+	
 end
 coroutine.wrap(PIZNK_fake_script)()
-
 local function UKNKUIM_fake_script() -- sellore.sell ore tp 
 	local script = Instance.new('LocalScript', sellore)
 
-	local player = game:GetService("Players").LocalPlayer
+	local player = game.Players.LocalPlayer
 	local button = script.Parent
-	local placeablesFolder = workspace:WaitForChild("Placeables", 5)
+	local placeablesFolder = workspace:WaitForChild("Placeables")
 	
-	if not placeablesFolder then
-		warn("Placeables folder not found!")
-		return
-	end
-	
+	-- Find your own UnloaderSystem based on OwnerId attribute
 	local function findOwnedUnloader()
 		for _, folder in ipairs(placeablesFolder:GetChildren()) do
 			if folder:IsA("Folder") then
@@ -406,26 +385,22 @@ local function UKNKUIM_fake_script() -- sellore.sell ore tp
 		end
 	end
 	
+	-- Teleport the character to a given position
 	local function teleportToPosition(position)
 		local character = player.Character or player.CharacterAdded:Wait()
-		local hrp = character:WaitForChild("HumanoidRootPart", 5)
-		if hrp then
-			hrp.CFrame = CFrame.new(position)
-		else
-			warn("HumanoidRootPart not found!")
-		end
+		local hrp = character:WaitForChild("HumanoidRootPart")
+		hrp.CFrame = CFrame.new(position)
 	end
 	
+	-- When button clicked
 	button.MouseButton1Click:Connect(function()
 		local character = player.Character or player.CharacterAdded:Wait()
-		local hrp = character:WaitForChild("HumanoidRootPart", 5)
-		if not hrp then
-			warn("HumanoidRootPart not found for sell ore!")
-			return
-		end
+		local hrp = character:WaitForChild("HumanoidRootPart")
 	
+		-- Save player's current position
 		local savedPosition = hrp.Position
 	
+		-- Find the UnloaderSystem owned by the player
 		local unloaderSystem = findOwnedUnloader()
 		if unloaderSystem then
 			local unloader = unloaderSystem:FindFirstChild("Unloader")
@@ -434,27 +409,16 @@ local function UKNKUIM_fake_script() -- sellore.sell ore tp
 				if cargoVolume then
 					local cargoPrompt = cargoVolume:FindFirstChild("CargoPrompt")
 					if cargoPrompt and cargoPrompt:IsA("ProximityPrompt") then
+						-- TP to CargoVolume (stand close enough)
 						hrp.CFrame = cargoVolume.CFrame * CFrame.new(0, 3, 0)
-						task.wait(0.5)
-						local success, err = pcall(function()
-							if fireproximityprompt then
-								fireproximityprompt(cargoPrompt)
-							else
-								local promptEvent = cargoPrompt:FindFirstChildWhichIsA("RemoteEvent")
-								if promptEvent then
-									promptEvent:FireServer()
-								else
-									local holdDuration = cargoPrompt.HoldDuration
-									cargoPrompt:InputHoldBegin()
-									task.wait(holdDuration + 0.1)
-									cargoPrompt:InputHoldEnd()
-								end
-							end
-						end)
-						if not success then
-							warn("Failed to interact with CargoPrompt: " .. tostring(err))
-						end
-						task.wait(0.5)
+	
+						task.wait(0.3) -- Small wait to load
+	
+						fireproximityprompt(cargoPrompt) -- Activate the prompt
+	
+						task.wait(0.3) -- Allow prompt to process
+	
+						-- TP back to saved position
 						teleportToPosition(savedPosition)
 					else
 						warn("CargoPrompt not found inside CargoVolume!")
@@ -469,53 +433,58 @@ local function UKNKUIM_fake_script() -- sellore.sell ore tp
 			warn("No owned UnloaderSystem found!")
 		end
 	end)
+	
 end
 coroutine.wrap(UKNKUIM_fake_script)()
-
 local function FULE_fake_script() -- mine.mine tp 
 	local script = Instance.new('LocalScript', mine)
 
-	local player = game:GetService("Players").LocalPlayer
-	local button = script.Parent
+	--// Services
+	local player = game.Players.LocalPlayer
+	local button = script.Parent -- The TextButton this script is inside
 	
-	local targetPosition = Vector3.new(-1854.74646, 2.04443312, -194.955902)
+	--// Target Position (CHANGE THIS to where you want to teleport)
+	local targetPosition = Vector3.new(-1854.74646, 2.04443312, -194.955902, 0.0103887655, -4.52599488e-06, 0.999945998, 3.74917581e-05, 1.00000012, 4.13460657e-06, -0.999946117, 3.74438969e-05, 0.0103887822) -- Example coordinates
 	
+	--// Teleport when button is clicked
 	button.MouseButton1Click:Connect(function()
 		local character = player.Character or player.CharacterAdded:Wait()
 		local hrp = character:FindFirstChild("HumanoidRootPart")
 		if hrp then
 			hrp.CFrame = CFrame.new(targetPosition)
-		else
-			warn("HumanoidRootPart not found for mine teleport!")
 		end
 	end)
+	
 end
 coroutine.wrap(FULE_fake_script)()
-
 local function KKQXR_fake_script() -- tycoon.tycoon tp 
 	local script = Instance.new('LocalScript', tycoon)
 
-	local player = game:GetService("Players").LocalPlayer
+	local player = game.Players.LocalPlayer
 	local button = script.Parent
-	local plotsFolder = workspace:WaitForChild("Plots", 5)
-	local teleportPartName = "Centre"
+	local plotsFolder = workspace:WaitForChild("Plots")
+	local teleportPartName = "Centre" -- We'll teleport to the Centre part
 	
-	if not plotsFolder then
-		warn("Plots folder not found!")
-		return
+	-- Function to check if BuildPlot has content (owned)
+	local function isOwned(buildPlot)
+		-- If there are more than 0 children inside BuildPlot, assume owned
+		return #buildPlot:GetChildren() > 0
 	end
 	
+	-- Function to find the player's plot
 	local function findMyPlot()
 		for _, plotModel in ipairs(plotsFolder:GetChildren()) do
 			if plotModel:IsA("Model") then
-				local ownerId = plotModel:GetAttribute("Owner") or plotModel:GetAttribute("OwnerId")
-				if ownerId == player.UserId then
+				local buildPlot = plotModel:FindFirstChild("BuildPlot")
+				if buildPlot and isOwned(buildPlot) then
+					-- This plot is owned, likely by the player
 					return plotModel
 				end
 			end
 		end
 	end
 	
+	-- Teleport when button is clicked
 	button.MouseButton1Click:Connect(function()
 		local myPlot = findMyPlot()
 		if myPlot then
@@ -524,9 +493,7 @@ local function KKQXR_fake_script() -- tycoon.tycoon tp
 				local character = player.Character or player.CharacterAdded:Wait()
 				local hrp = character:FindFirstChild("HumanoidRootPart")
 				if hrp then
-					hrp.CFrame = CFrame.new(centrePart.Position + Vector3.new(0, 2, 0))
-				else
-					warn("HumanoidRootPart not found for tycoon teleport!")
+					hrp.CFrame = CFrame.new(centrePart.Position + Vector3.new(0, 2, 0)) -- tp slightly above
 				end
 			else
 				warn("Centre part not found in your plot!")
@@ -535,102 +502,96 @@ local function KKQXR_fake_script() -- tycoon.tycoon tp
 			warn("Your plot was not found!")
 		end
 	end)
+	
 end
 coroutine.wrap(KKQXR_fake_script)()
-
 local function TTDVCH_fake_script() -- shop.shop tp 
 	local script = Instance.new('LocalScript', shop)
 
-	local player = game:GetService("Players").LocalPlayer
-	local button = script.Parent
+	--// Services
+	local player = game.Players.LocalPlayer
+	local button = script.Parent -- The TextButton this script is inside
 	
-	local targetPosition = Vector3.new(-1551.3374, 7.15586329, 20.6824684)
+	--// Target Position (CHANGE THIS to where you want to teleport)
+	local targetPosition = Vector3.new(-1551.3374, 7.15586329, 20.6824684, 0.00455896882, 3.29408795e-06, -0.999989569, 3.94628732e-05, 1, 3.47569585e-06, 0.999989569, -3.94807648e-05, 0.00455894647) -- Example coordinates
 	
+	--// Teleport when button is clicked
 	button.MouseButton1Click:Connect(function()
 		local character = player.Character or player.CharacterAdded:Wait()
 		local hrp = character:FindFirstChild("HumanoidRootPart")
 		if hrp then
 			hrp.CFrame = CFrame.new(targetPosition)
-		else
-			warn("HumanoidRootPart not found for shop teleport!")
 		end
 	end)
+	
 end
 coroutine.wrap(TTDVCH_fake_script)()
-
 local function SFJYWQ_fake_script() -- TextBox.WalkSpeedScript 
 	local script = Instance.new('LocalScript', TextBox)
 
-	local walkSpeedInputBox = script.Parent
+	-- Get reference to the TextBox that this LocalScript is inside
+	local walkSpeedInputBox = script.Parent  -- The TextBox that this LocalScript is inside
 	
+	-- Function to set the WalkSpeed
 	local function setWalkSpeed(walkSpeedValue)
-		local character = game:GetService("Players").LocalPlayer.Character
-		if character then
-			local humanoid = character:WaitForChild("Humanoid", 5)
-			if humanoid then
-				if walkSpeedValue >= 1 and walkSpeedValue <= 100 then
-					humanoid.WalkSpeed = walkSpeedValue
-					walkSpeedInputBox.Text = tostring(walkSpeedValue)
-				else
-					humanoid.WalkSpeed = 16
-					walkSpeedInputBox.Text = "16"
-				end
-			else
-				warn("Humanoid not found for walkspeed!")
-			end
+		-- Check if the value is within the valid range
+		if walkSpeedValue >= 1 and walkSpeedValue <= 100 then
+			-- Set the walk speed for the player's character
+			game.Players.LocalPlayer.Character:WaitForChild("Humanoid").WalkSpeed = walkSpeedValue
+			walkSpeedInputBox.Text = tostring(walkSpeedValue)  -- Display the valid walk speed in the TextBox
 		else
-			warn("Character not found for walkspeed!")
-		end
-	end
-	
-	local character = game:GetService("Players").LocalPlayer.Character
-	if character then
-		local humanoid = character:WaitForChild("Humanoid", 5)
-		if humanoid then
-			humanoid.WalkSpeed = 16
+			-- If the value is out of range, set the walk speed to 16 and display 16 in the TextBox
+			game.Players.LocalPlayer.Character:WaitForChild("Humanoid").WalkSpeed = 16
 			walkSpeedInputBox.Text = "16"
 		end
 	end
 	
+	-- Set the default WalkSpeed to 16 and show "16" in the TextBox on startup
+	game.Players.LocalPlayer.Character:WaitForChild("Humanoid").WalkSpeed = 16
+	walkSpeedInputBox.Text = "16"
+	
+	-- When the TextBox loses focus (e.g., user clicks away or presses Enter), update the WalkSpeed
 	walkSpeedInputBox.FocusLost:Connect(function(enterPressed)
-		local inputValue = tonumber(walkSpeedInputBox.Text)
+		local inputValue = tonumber(walkSpeedInputBox.Text)  -- Get the text from the TextBox and convert it to a number
 		if inputValue then
-			setWalkSpeed(inputValue)
+			setWalkSpeed(inputValue)  -- If it's a valid number, update the walk speed
 		else
-			walkSpeedInputBox.Text = "16"
-			setWalkSpeed(16)
+			-- If it's not a valid number, clear the TextBox
+			walkSpeedInputBox.Text = "" 
 		end
 	end)
+	
 end
 coroutine.wrap(SFJYWQ_fake_script)()
-
 local function RTCZIU_fake_script() -- blocksEspButton.blocks esp script 
 	local script = Instance.new('LocalScript', blocksEspButton)
 
+	--// Services
 	local Workspace = game:GetService("Workspace")
 	local RunService = game:GetService("RunService")
 	local Players = game:GetService("Players")
 	
+	--// Variables
 	local player = Players.LocalPlayer
 	local character = player.Character or player.CharacterAdded:Wait()
-	local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
+	local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 	
-	local spawnedBlocks = Workspace:WaitForChild("SpawnedBlocks", 5) or Workspace:FindFirstChild("SpawnedOres")
-	if not spawnedBlocks then
-		warn("Neither SpawnedBlocks nor SpawnedOres folder found!")
-		return
-	end
-	
+	local spawnedBlocks = Workspace:WaitForChild("SpawnedBlocks")
 	local espFolder = Instance.new("Folder")
-	espFolder.Name = "BlockESP"
+	espFolder.Name = "OreESP"
 	espFolder.Parent = game.CoreGui
 	
-	local espEnabled = false
-	local maxDistance = 500
+	local espEnabled = false -- Start with ESP turned OFF
+	local maxDistance = 200 -- Studs
 	local espParts = {}
 	
+	--// Reference to the TextButton
+	local blocksEspButton = script.Parent -- LocalScript is inside the button
+	
+	-- Set the button text initially
 	blocksEspButton.Text = "Blocks ESP: OFF"
 	
+	--// Ore Color Settings
 	local oreColors = {
 		["Tin"] = Color3.fromRGB(57, 59, 49),
 		["Iron"] = Color3.fromRGB(130, 72, 31),
@@ -651,7 +612,8 @@ local function RTCZIU_fake_script() -- blocksEspButton.blocks esp script
 		["Adamantium"] = Color3.fromRGB(62, 125, 56),
 		["Rhodium"] = Color3.fromRGB(179, 182, 174),
 		["Unobtanium"] = Color3.fromRGB(255, 0, 255),
-		["Molybdenum"] = Color3.fromRGB(100, 100, 100),
+	
+		-- Gems
 		["Topaz"] = Color3.fromRGB(69, 70, 13),
 		["Emerald"] = Color3.fromRGB(2, 81, 0),
 		["Sapphire"] = Color3.fromRGB(1, 3, 72),
@@ -664,8 +626,9 @@ local function RTCZIU_fake_script() -- blocksEspButton.blocks esp script
 		["Painite"] = Color3.fromRGB(85, 21, 26),
 	}
 	
+	--// Create ESP
 	local function createESP(part)
-		local mineId = part:GetAttribute("MineId") or part:GetAttribute("OreType") or part.Name or "Unknown"
+		local mineId = part:GetAttribute("MineId") or "Unknown"
 		local color = oreColors[mineId] or Color3.fromRGB(255, 255, 255)
 	
 		local box = Instance.new("BoxHandleAdornment")
@@ -698,29 +661,26 @@ local function RTCZIU_fake_script() -- blocksEspButton.blocks esp script
 		espParts[part] = {box = box, billboard = billboard}
 	end
 	
+	--// Setup existing ores
 	local function setupExistingBlocks()
 		for _, block in ipairs(spawnedBlocks:GetChildren()) do
-			if block:IsA("BasePart") and block.Anchored then
-				local success, err = pcall(createESP, block)
-				if not success then
-					warn("Failed to create ESP for block: " .. tostring(err))
-				end
+			if block:IsA("BasePart") then
+				createESP(block)
 			end
 		end
 	end
 	
 	setupExistingBlocks()
 	
+	--// Handle new ores spawning
 	spawnedBlocks.ChildAdded:Connect(function(child)
-		if child:IsA("BasePart") and child.Anchored then
+		if child:IsA("BasePart") then
 			task.wait(0.1)
-			local success, err = pcall(createESP, child)
-			if not success then
-				warn("Failed to create ESP for new block: " .. tostring(err))
-			end
+			createESP(child)
 		end
 	end)
 	
+	--// Handle ores being removed
 	spawnedBlocks.ChildRemoved:Connect(function(child)
 		if espParts[child] then
 			espParts[child].box:Destroy()
@@ -729,7 +689,8 @@ local function RTCZIU_fake_script() -- blocksEspButton.blocks esp script
 		end
 	end)
 	
-	RunService.Heartbeat:Connect(function()
+	--// Update ESP every frame
+	RunService.RenderStepped:Connect(function()
 		if not humanoidRootPart then
 			character = player.Character or player.CharacterAdded:Wait()
 			humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
@@ -751,6 +712,7 @@ local function RTCZIU_fake_script() -- blocksEspButton.blocks esp script
 		end
 	end)
 	
+	--// Toggle ESP on button click
 	blocksEspButton.MouseButton1Click:Connect(function()
 		espEnabled = not espEnabled
 		blocksEspButton.Text = espEnabled and "Blocks ESP: ON" or "Blocks ESP: OFF"
@@ -768,60 +730,72 @@ local function RTCZIU_fake_script() -- blocksEspButton.blocks esp script
 		end
 	end)
 	
+	--// Reset ESP when player dies or respawns
 	player.CharacterAdded:Connect(function(newCharacter)
+		-- Clear all old ESP parts
 		for part, esp in pairs(espParts) do
 			if esp.box then esp.box:Destroy() end
 			if esp.billboard then esp.billboard:Destroy() end
 		end
 		espParts = {}
 	
+		-- Update character reference
 		character = newCharacter
-		humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
+		humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+	
+		-- Rebuild ESP if needed
 		setupExistingBlocks()
 	end)
+	
 end
 coroutine.wrap(RTCZIU_fake_script)()
-
 local function OQBZD_fake_script() -- Frame.right-shift 
 	local script = Instance.new('LocalScript', Frame)
 
-	local frame = script.Parent
+	-- Get references to the necessary UI elements
+	local frame = script.Parent  -- The Frame that you want to toggle
+	
+	-- Get the UserInputService to listen for key presses
 	local UserInputService = game:GetService("UserInputService")
 	
+	-- Initially, the frame is visible
 	frame.Visible = true
 	
+	-- Function to toggle the visibility of the frame
 	local function toggleFrameVisibility(input)
 		if input.UserInputType == Enum.UserInputType.Keyboard then
+			-- Check if RightShift key is pressed
 			if input.KeyCode == Enum.KeyCode.RightShift then
-				frame.Visible = not frame.Visible
+				frame.Visible = not frame.Visible  -- Toggle the visibility
 			end
 		end
 	end
 	
+	-- Connect the input began event to detect key presses
 	UserInputService.InputBegan:Connect(toggleFrameVisibility)
+	
 end
 coroutine.wrap(OQBZD_fake_script)()
-
 local function VIJPO_fake_script() -- c4shop.c4 shop tp 
 	local script = Instance.new('LocalScript', c4shop)
 
-	local player = game:GetService("Players").LocalPlayer
-	local button = script.Parent
+	--// Services
+	local player = game.Players.LocalPlayer
+	local button = script.Parent -- The TextButton this script is inside
 	
-	local targetPosition = Vector3.new(387.988403, 75.3827286, -751.247314)
+	--// Target Position (CHANGE THIS to where you want to teleport)
+	local targetPosition = Vector3.new(387.988403, 75.3827286, -751.247314, 0.744538784, -3.17664817e-05, 0.667579174, 3.839493e-05, 1, 4.75812703e-06, -0.667579174, 2.20914371e-05, 0.744538844) -- Example coordinates
 	
+	--// Teleport when button is clicked
 	button.MouseButton1Click:Connect(function()
 		local character = player.Character or player.CharacterAdded:Wait()
 		local hrp = character:FindFirstChild("HumanoidRootPart")
 		if hrp then
 			hrp.CFrame = CFrame.new(targetPosition)
-		else
-			warn("HumanoidRootPart not found for C4 shop teleport!")
 		end
 	end)
 end
 coroutine.wrap(VIJPO_fake_script)()
-
 local function ETDSH_fake_script() -- resetc4button.mobile reset c4 button 
 	local script = Instance.new('LocalScript', resetc4button)
 
@@ -829,15 +803,48 @@ local function ETDSH_fake_script() -- resetc4button.mobile reset c4 button
 	local UserInputService = game:GetService("UserInputService")
 	local VirtualInputManager = game:GetService("VirtualInputManager")
 	local RunService = game:GetService("RunService")
-	local camera = workspace.CurrentCamera
+	local Workspace = game:GetService("Workspace")
 	
 	local player = Players.LocalPlayer
-	local button = script.Parent
+	local button = script.Parent  -- "Reset C4 Button"
+	local camera = Workspace.CurrentCamera
 	local character = player.Character or player.CharacterAdded:Wait()
 	
 	local savedCFrame
 	local savedCameraCFrame
 	local savedWalkSpeed
+	
+	local function setControlModeToJoystick()
+		local successMode, errMode = pcall(function()
+			local playerScripts = player:WaitForChild("PlayerScripts", 5)
+			local controlModule = playerScripts:FindFirstChild("ControlModule")
+			if controlModule then
+				local controlState = controlModule:GetAttribute("ControlState") or "Keyboard"
+				if controlState ~= "Joystick" then
+					controlModule:SetAttribute("ControlState", "Joystick")
+					warn("Forced ControlState to Joystick")
+				end
+			else
+				warn("ControlModule not found! Attempting settings click simulation.")
+				-- Tentar simular clique na interface de configurações
+				local successClick, errClick = pcall(function()
+					VirtualInputManager:SendTouchEvent(1, Enum.UserInputState.Begin, Vector2.new(0.95, 0.05)) -- Botão de configurações (canto superior direito)
+					task.wait(0.1)
+					VirtualInputManager:SendTouchEvent(1, Enum.UserInputState.End, Vector2.new(0.95, 0.05))
+					task.wait(0.5)
+					VirtualInputManager:SendTouchEvent(2, Enum.UserInputState.Begin, Vector2.new(0.5, 0.6)) -- Selecionar "Joystick" no menu
+					task.wait(0.1)
+					VirtualInputManager:SendTouchEvent(2, Enum.UserInputState.End, Vector2.new(0.5, 0.6))
+				end)
+				if not successClick then
+					warn("Failed to simulate settings click: " .. tostring(errClick))
+				end
+			end
+		end)
+		if not successMode then
+			warn("Failed to set ControlState: " .. tostring(errMode))
+		end
+	end
 	
 	local function resetC4()
 		character = player.Character or player.CharacterAdded:Wait()
@@ -849,20 +856,24 @@ local function ETDSH_fake_script() -- resetc4button.mobile reset c4 button
 			return
 		end
 	
+		-- Save position, camera, walkspeed
 		savedCFrame = root.CFrame
 		savedCameraCFrame = camera.CFrame
 		savedWalkSpeed = humanoid.WalkSpeed
 	
+		-- Reset character
 		humanoid.Health = 0
 	
+		-- Wait for new character
 		player.CharacterAdded:Wait()
-		task.wait(1) -- Aumentado para garantir inicialização no mobile
+		task.wait(3) -- Aumentado para 3 segundos para inicialização completa no mobile
 	
 		character = player.Character or player.CharacterAdded:Wait()
 		local newRoot = character:WaitForChild("HumanoidRootPart", 5)
 		local newHumanoid = character:WaitForChild("Humanoid", 5)
 	
 		if newRoot and newHumanoid then
+			-- Restore data
 			newRoot.CFrame = savedCFrame
 			newHumanoid.WalkSpeed = savedWalkSpeed
 			
@@ -874,7 +885,7 @@ local function ETDSH_fake_script() -- resetc4button.mobile reset c4 button
 			-- Loop para garantir que a câmera não seja sobrescrita
 			local cameraFixConnection
 			local fixAttempts = 0
-			local maxFixAttempts = 30 -- Aproximadamente 1 segundo a 30 FPS
+			local maxFixAttempts = 90 -- Aproximadamente 3 segundos a 30 FPS
 			cameraFixConnection = RunService.RenderStepped:Connect(function()
 				if fixAttempts >= maxFixAttempts then
 					cameraFixConnection:Disconnect()
@@ -888,14 +899,31 @@ local function ETDSH_fake_script() -- resetc4button.mobile reset c4 button
 				fixAttempts = fixAttempts + 1
 			end)
 			
-			task.wait(0.5) -- Delay antes da tecla
-			local success, err = pcall(function()
+			-- Forçar estado de movimento para ativar controles mobile
+			newHumanoid:ChangeState(Enum.HumanoidStateType.Running)
+			
+			-- Forçar modo de movimento para "Joystick"
+			setControlModeToJoystick()
+			
+			-- Simular toque para "acordar" joystick mobile
+			local successTouch, errTouch = pcall(function()
+				VirtualInputManager:SendTouchEvent(1, Enum.UserInputState.Begin, Vector2.new(0.4, 0.85))
+				task.wait(0.1)
+				VirtualInputManager:SendTouchEvent(1, Enum.UserInputState.End, Vector2.new(0.4, 0.85))
+			end)
+			if not successTouch then
+				warn("Failed to simulate touch: " .. tostring(errTouch))
+			end
+			
+			-- Simulate pressing "2"
+			task.wait(0.5)
+			local successKey, errKey = pcall(function()
 				VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Two, false, game)
 				task.wait(0.1)
 				VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Two, false, game)
 			end)
-			if not success then
-				warn("Failed to simulate key press: " .. tostring(err))
+			if not successKey then
+				warn("Failed to simulate key press: " .. tostring(errKey))
 			else
 				warn("C4 reset completed successfully")
 			end
@@ -904,6 +932,7 @@ local function ETDSH_fake_script() -- resetc4button.mobile reset c4 button
 		end
 	end
 	
+	-- 🔘 When player clicks the GUI button (mobile or PC)
 	button.MouseButton1Click:Connect(function()
 		local success, err = pcall(resetC4)
 		if not success then
@@ -911,6 +940,7 @@ local function ETDSH_fake_script() -- resetc4button.mobile reset c4 button
 		end
 	end)
 	
+	-- 🖱️ When PC player presses "F"
 	UserInputService.InputBegan:Connect(function(input, gameProcessed)
 		if gameProcessed then return end
 		if input.KeyCode == Enum.KeyCode.F then
@@ -920,9 +950,7 @@ local function ETDSH_fake_script() -- resetc4button.mobile reset c4 button
 			end
 		end
 	end)
+	
 end
 coroutine.wrap(ETDSH_fake_script)()
-
--- Debug inicial
-warn("Mining GUI loaded at: " .. os.date())
 ```

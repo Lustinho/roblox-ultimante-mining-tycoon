@@ -1,20 +1,6 @@
 ```lua
 -- Mining GUI
--- Version: 3.6 (Updated for Ultimate Mining Tycoon v0.3.5)
-
--- Verificação inicial de serviços
-local Players = game:GetService("Players")
-local UserInputService = game:GetService("UserInputService")
-local VirtualInputManager = game:GetService("VirtualInputManager")
-local RunService = game:GetService("RunService")
-local Workspace = game:GetService("Workspace")
-
-local player = Players.LocalPlayer
-local playerGui = player:WaitForChild("PlayerGui", 5)
-if not playerGui then
-    warn("PlayerGui not found! Script cannot proceed.")
-    return
-end
+-- Version: 3.5 (Updated for Ultimate Mining Tycoon v0.3.5)
 
 -- Instances:
 
@@ -51,7 +37,7 @@ local UICorner_11 = Instance.new("UICorner")
 -- Properties:
 
 ScreenGui.Name = "MiningGUI"
-ScreenGui.Parent = playerGui
+ScreenGui.Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui", 5)
 ScreenGui.ResetOnSpawn = false
 ScreenGui.Enabled = true
 
@@ -326,697 +312,666 @@ UICorner_11.Parent = resetc4button
 
 -- Scripts:
 
-local function INPMCR_fake_script() -- Showhide.show/hide button
-    local success, err = pcall(function()
-        local button = Showhide
-        local overframe = button.Parent
-        local gui = overframe.Parent
-        local targetFrame = gui:WaitForChild("Frame", 5)
-        
-        if not targetFrame then
-            warn("Frame not found in GUI!")
-            return
-        end
-        
-        targetFrame.Visible = true
-        button.Text = "↓"
-        
-        button.MouseButton1Click:Connect(function()
-            targetFrame.Visible = not targetFrame.Visible
-            button.Text = targetFrame.Visible and "↓" or "↑"
-        end)
-    end)
-    if not success then
-        warn("INPMCR_fake_script failed: " .. tostring(err))
-    end
+local function INPMCR_fake_script() -- Showhide.show/hide button 
+	local script = Instance.new('LocalScript', Showhide)
+
+	local button = script.Parent
+	local overframe = button.Parent
+	local gui = overframe.Parent
+	local targetFrame = gui:WaitForChild("Frame", 5)
+	
+	if not targetFrame then
+		warn("Frame not found in GUI!")
+		return
+	end
+	
+	targetFrame.Visible = true
+	button.Text = "↓"
+	
+	button.MouseButton1Click:Connect(function()
+		targetFrame.Visible = not targetFrame.Visible
+		button.Text = targetFrame.Visible and "↓" or "↑"
+	end)
 end
 
-local function PIZNK_fake_script() -- OverFrame.draggable
-    local success, err = pcall(function()
-        local dragFrame = OverFrame
-        local gui = dragFrame.Parent
-        local linkedFrame = gui:WaitForChild("Frame", 5)
-        
-        if not linkedFrame then
-            warn("Linked Frame not found!")
-            return
-        end
-        
-        local dragging = false
-        local dragStart, startPos
-        
-        local function update(input)
-            local delta = input.Position - dragStart
-            dragFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-            linkedFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-        end
-        
-        dragFrame.InputBegan:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-                dragging = true
-                dragStart = input.Position
-                startPos = dragFrame.Position
-        
-                input.Changed:Connect(function()
-                    if input.UserInputState == Enum.UserInputState.End then
-                        dragging = false
-                    end
-                end)
-            end
-        end)
-        
-        UserInputService.InputChanged:Connect(function(input)
-            if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-                update(input)
-            end
-        end)
-    end)
-    if not success then
-        warn("PIZNK_fake_script failed: " .. tostring(err))
-    end
+local function PIZNK_fake_script() -- OverFrame.draggable 
+	local script = Instance.new('LocalScript', OverFrame)
+
+	local dragFrame = script.Parent
+	local gui = dragFrame.Parent
+	local linkedFrame = gui:WaitForChild("Frame", 5)
+	
+	if not linkedFrame then
+		warn("Linked Frame not found!")
+		return
+	end
+	
+	local dragging = false
+	local dragStart, startPos
+	
+	local UserInputService = game:GetService("UserInputService")
+	
+	local function update(input)
+		local delta = input.Position - dragStart
+		dragFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+		linkedFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+	end
+	
+	dragFrame.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			dragging = true
+			dragStart = input.Position
+			startPos = dragFrame.Position
+	
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragging = false
+				end
+			end)
+		end
+	end)
+	
+	UserInputService.InputChanged:Connect(function(input)
+		if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+			update(input)
+		end
+	end)
 end
 
-local function UKNKUIM_fake_script() -- sellore.sell ore tp
-    local success, err = pcall(function()
-        local player = Players.LocalPlayer
-        local button = sellore
-        local placeablesFolder = Workspace:WaitForChild("Placeables", 5)
-        
-        if not placeablesFolder then
-            warn("Placeables folder not found!")
-            return
-        end
-        
-        local function findOwnedUnloader()
-            for _, folder in ipairs(placeablesFolder:GetChildren()) do
-                if folder:IsA("Folder") then
-                    local unloaderSystem = folder:FindFirstChild("UnloaderSystem")
-                    if unloaderSystem and unloaderSystem:IsA("Model") then
-                        local ownerId = unloaderSystem:GetAttribute("OwnerId")
-                        if ownerId == player.UserId then
-                            return unloaderSystem
-                        end
-                    end
-                end
-            end
-        end
-        
-        local function teleportToPosition(position)
-            local character = player.Character or player.CharacterAdded:Wait()
-            local hrp = character:WaitForChild("HumanoidRootPart", 5)
-            if hrp then
-                hrp.CFrame = CFrame.new(position)
-            else
-                warn("HumanoidRootPart not found!")
-            end
-        end
-        
-        button.MouseButton1Click:Connect(function()
-            local character = player.Character or player.CharacterAdded:Wait()
-            local hrp = character:WaitForChild("HumanoidRootPart", 5)
-            if not hrp then
-                warn("HumanoidRootPart not found for sell ore!")
-                return
-            end
-        
-            local savedPosition = hrp.Position
-        
-            local unloaderSystem = findOwnedUnloader()
-            if unloaderSystem then
-                local unloader = unloaderSystem:FindFirstChild("Unloader")
-                if unloader then
-                    local cargoVolume = unloader:FindFirstChild("CargoVolume")
-                    if cargoVolume then
-                        local cargoPrompt = cargoVolume:FindFirstChild("CargoPrompt")
-                        if cargoPrompt and cargoPrompt:IsA("ProximityPrompt") then
-                            hrp.CFrame = cargoVolume.CFrame * CFrame.new(0, 3, 0)
-                            task.wait(0.5)
-                            local successPrompt, errPrompt = pcall(function()
-                                if fireproximityprompt then
-                                    fireproximityprompt(cargoPrompt)
-                                else
-                                    local promptEvent = cargoPrompt:FindFirstChildWhichIsA("RemoteEvent")
-                                    if promptEvent then
-                                        promptEvent:FireServer()
-                                    else
-                                        local holdDuration = cargoPrompt.HoldDuration
-                                        cargoPrompt:InputHoldBegin()
-                                        task.wait(holdDuration + 0.1)
-                                        cargoPrompt:InputHoldEnd()
-                                    end
-                                end
-                            end)
-                            if not successPrompt then
-                                warn("Failed to interact with CargoPrompt: " .. tostring(errPrompt))
-                            end
-                            task.wait(0.5)
-                            teleportToPosition(savedPosition)
-                        else
-                            warn("CargoPrompt not found inside CargoVolume!")
-                        end
-                    else
-                        warn("CargoVolume not found inside Unloader!")
-                    end
-                else
-                    warn("Unloader not found inside UnloaderSystem!")
-                end
-            else
-                warn("No owned UnloaderSystem found!")
-            end
-        end)
-    end)
-    if not success then
-        warn("UKNKUIM_fake_script failed: " .. tostring(err))
-    end
+local function UKNKUIM_fake_script() -- sellore.sell ore tp 
+	local script = Instance.new('LocalScript', sellore)
+
+	local player = game:GetService("Players").LocalPlayer
+	local button = script.Parent
+	local placeablesFolder = workspace:WaitForChild("Placeables", 5)
+	
+	if not placeablesFolder then
+		warn("Placeables folder not found!")
+		return
+	end
+	
+	local function findOwnedUnloader()
+		for _, folder in ipairs(placeablesFolder:GetChildren()) do
+			if folder:IsA("Folder") then
+				local unloaderSystem = folder:FindFirstChild("UnloaderSystem")
+				if unloaderSystem and unloaderSystem:IsA("Model") then
+					local ownerId = unloaderSystem:GetAttribute("OwnerId")
+					if ownerId == player.UserId then
+						return unloaderSystem
+					end
+				end
+			end
+		end
+	end
+	
+	local function teleportToPosition(position)
+		local character = player.Character or player.CharacterAdded:Wait()
+		local hrp = character:WaitForChild("HumanoidRootPart", 5)
+		if hrp then
+			hrp.CFrame = CFrame.new(position)
+		else
+			warn("HumanoidRootPart not found!")
+		end
+	end
+	
+	button.MouseButton1Click:Connect(function()
+		local character = player.Character or player.CharacterAdded:Wait()
+		local hrp = character:WaitForChild("HumanoidRootPart", 5)
+		if not hrp then
+			warn("HumanoidRootPart not found for sell ore!")
+			return
+		end
+	
+		local savedPosition = hrp.Position
+	
+		local unloaderSystem = findOwnedUnloader()
+		if unloaderSystem then
+			local unloader = unloaderSystem:FindFirstChild("Unloader")
+			if unloader then
+				local cargoVolume = unloader:FindFirstChild("CargoVolume")
+				if cargoVolume then
+					local cargoPrompt = cargoVolume:FindFirstChild("CargoPrompt")
+					if cargoPrompt and cargoPrompt:IsA("ProximityPrompt") then
+						hrp.CFrame = cargoVolume.CFrame * CFrame.new(0, 3, 0)
+						task.wait(0.5)
+						local success, err = pcall(function()
+							if fireproximityprompt then
+								fireproximityprompt(cargoPrompt)
+							else
+								local promptEvent = cargoPrompt:FindFirstChildWhichIsA("RemoteEvent")
+								if promptEvent then
+									promptEvent:FireServer()
+								else
+									local holdDuration = cargoPrompt.HoldDuration
+									cargoPrompt:InputHoldBegin()
+									task.wait(holdDuration + 0.1)
+									cargoPrompt:InputHoldEnd()
+								end
+							end
+						end)
+						if not success then
+							warn("Failed to interact with CargoPrompt: " .. tostring(err))
+						end
+						task.wait(0.5)
+						teleportToPosition(savedPosition)
+					else
+						warn("CargoPrompt not found inside CargoVolume!")
+					end
+				else
+					warn("CargoVolume not found inside Unloader!")
+				end
+			else
+				warn("Unloader not found inside UnloaderSystem!")
+			end
+		else
+			warn("No owned UnloaderSystem found!")
+		end
+	end)
 end
 
-local function FULE_fake_script() -- mine.mine tp
-    local success, err = pcall(function()
-        local player = Players.LocalPlayer
-        local button = mine
-        local targetPosition = Vector3.new(-1854.74646, 2.04443312, -194.955902)
-        
-        button.MouseButton1Click:Connect(function()
-            local character = player.Character or player.CharacterAdded:Wait()
-            local hrp = character:FindFirstChild("HumanoidRootPart")
-            if hrp then
-                hrp.CFrame = CFrame.new(targetPosition)
-            else
-                warn("HumanoidRootPart not found for mine teleport!")
-            end
-        end)
-    end)
-    if not success then
-        warn("FULE_fake_script failed: " .. tostring(err))
-    end
+local function FULE_fake_script() -- mine.mine tp 
+	local script = Instance.new('LocalScript', mine)
+
+	local player = game:GetService("Players").LocalPlayer
+	local button = script.Parent
+	
+	local targetPosition = Vector3.new(-1854.74646, 2.04443312, -194.955902)
+	
+	button.MouseButton1Click:Connect(function()
+		local character = player.Character or player.CharacterAdded:Wait()
+		local hrp = character:FindFirstChild("HumanoidRootPart")
+		if hrp then
+			hrp.CFrame = CFrame.new(targetPosition)
+		else
+			warn("HumanoidRootPart not found for mine teleport!")
+		end
+	end)
 end
 
-local function KKQXR_fake_script() -- tycoon.tycoon tp
-    local success, err = pcall(function()
-        local player = Players.LocalPlayer
-        local button = tycoon
-        local plotsFolder = Workspace:WaitForChild("Plots", 5)
-        local teleportPartName = "Centre"
-        
-        if not plotsFolder then
-            warn("Plots folder not found!")
-            return
-        end
-        
-        local function findMyPlot()
-            for _, plotModel in ipairs(plotsFolder:GetChildren()) do
-                if plotModel:IsA("Model") then
-                    local ownerId = plotModel:GetAttribute("Owner") or plotModel:GetAttribute("OwnerId")
-                    if ownerId == player.UserId then
-                        return plotModel
-                    end
-                end
-            end
-        end
-        
-        button.MouseButton1Click:Connect(function()
-            local myPlot = findMyPlot()
-            if myPlot then
-                local centrePart = myPlot:FindFirstChild(teleportPartName)
-                if centrePart and centrePart:IsA("BasePart") then
-                    local character = player.Character or player.CharacterAdded:Wait()
-                    local hrp = character:FindFirstChild("HumanoidRootPart")
-                    if hrp then
-                        hrp.CFrame = CFrame.new(centrePart.Position + Vector3.new(0, 2, 0))
-                    else
-                        warn("HumanoidRootPart not found for tycoon teleport!")
-                    end
-                else
-                    warn("Centre part not found in your plot!")
-                end
-            else
-                warn("Your plot was not found!")
-            end
-        end)
-    end)
-    if not success then
-        warn("KKQXR_fake_script failed: " .. tostring(err))
-    end
+local function KKQXR_fake_script() -- tycoon.tycoon tp 
+	local script = Instance.new('LocalScript', tycoon)
+
+	local player = game:GetService("Players").LocalPlayer
+	local button = script.Parent
+	local plotsFolder = workspace:WaitForChild("Plots", 5)
+	local teleportPartName = "Centre"
+	
+	if not plotsFolder then
+		warn("Plots folder not found!")
+		return
+	end
+	
+	local function findMyPlot()
+		for _, plotModel in ipairs(plotsFolder:GetChildren()) do
+			if plotModel:IsA("Model") then
+				local ownerId = plotModel:GetAttribute("Owner") or plotModel:GetAttribute("OwnerId")
+				if ownerId == player.UserId then
+					return plotModel
+				end
+			end
+		end
+	end
+	
+	button.MouseButton1Click:Connect(function()
+		local myPlot = findMyPlot()
+		if myPlot then
+			local centrePart = myPlot:FindFirstChild(teleportPartName)
+			if centrePart and centrePart:IsA("BasePart") then
+				local character = player.Character or player.CharacterAdded:Wait()
+				local hrp = character:FindFirstChild("HumanoidRootPart")
+				if hrp then
+					hrp.CFrame = CFrame.new(centrePart.Position + Vector3.new(0, 2, 0))
+				else
+					warn("HumanoidRootPart not found for tycoon teleport!")
+				end
+			else
+				warn("Centre part not found in your plot!")
+			end
+		else
+			warn("Your plot was not found!")
+		end
+	end)
 end
 
-local function TTDVCH_fake_script() -- shop.shop tp
-    local success, err = pcall(function()
-        local player = Players.LocalPlayer
-        local button = shop
-        local targetPosition = Vector3.new(-1551.3374, 7.15586329, 20.6824684)
-        
-        button.MouseButton1Click:Connect(function()
-            local character = player.Character or player.CharacterAdded:Wait()
-            local hrp = character:FindFirstChild("HumanoidRootPart")
-            if hrp then
-                hrp.CFrame = CFrame.new(targetPosition)
-            else
-                warn("HumanoidRootPart not found for shop teleport!")
-            end
-        end)
-    end)
-    if not success then
-        warn("TTDVCH_fake_script failed: " .. tostring(err))
-    end
+local function TTDVCH_fake_script() -- shop.shop tp 
+	local script = Instance.new('LocalScript', shop)
+
+	local player = game:GetService("Players").LocalPlayer
+	local button = script.Parent
+	
+	local targetPosition = Vector3.new(-1551.3374, 7.15586329, 20.6824684)
+	
+	button.MouseButton1Click:Connect(function()
+		local character = player.Character or player.CharacterAdded:Wait()
+		local hrp = character:FindFirstChild("HumanoidRootPart")
+		if hrp then
+			hrp.CFrame = CFrame.new(targetPosition)
+		else
+			warn("HumanoidRootPart not found for shop teleport!")
+		end
+	end)
 end
 
-local function SFJYWQ_fake_script() -- TextBox.WalkSpeedScript
-    local success, err = pcall(function()
-        local walkSpeedInputBox = TextBox
-        
-        local function setWalkSpeed(walkSpeedValue)
-            local character = Players.LocalPlayer.Character
-            if character then
-                local humanoid = character:WaitForChild("Humanoid", 5)
-                if humanoid then
-                    if walkSpeedValue >= 1 and walkSpeedValue <= 100 then
-                        humanoid.WalkSpeed = walkSpeedValue
-                        walkSpeedInputBox.Text = tostring(walkSpeedValue)
-                    else
-                        humanoid.WalkSpeed = 16
-                        walkSpeedInputBox.Text = "16"
-                    end
-                else
-                    warn("Humanoid not found for walkspeed!")
-                end
-            else
-                warn("Character not found for walkspeed!")
-            end
-        end
-        
-        local character = Players.LocalPlayer.Character
-        if character then
-            local humanoid = character:WaitForChild("Humanoid", 5)
-            if humanoid then
-                humanoid.WalkSpeed = 16
-                walkSpeedInputBox.Text = "16"
-            end
-        end
-        
-        walkSpeedInputBox.FocusLost:Connect(function(enterPressed)
-            local inputValue = tonumber(walkSpeedInputBox.Text)
-            if inputValue then
-                setWalkSpeed(inputValue)
-            else
-                walkSpeedInputBox.Text = "16"
-                setWalkSpeed(16)
-            end
-        end)
-    end)
-    if not success then
-        warn("SFJYWQ_fake_script failed: " .. tostring(err))
-    end
+local function SFJYWQ_fake_script() -- TextBox.WalkSpeedScript 
+	local script = Instance.new('LocalScript', TextBox)
+
+	local walkSpeedInputBox = script.Parent
+	
+	local function setWalkSpeed(walkSpeedValue)
+		local character = game:GetService("Players").LocalPlayer.Character
+		if character then
+			local humanoid = character:WaitForChild("Humanoid", 5)
+			if humanoid then
+				if walkSpeedValue >= 1 and walkSpeedValue <= 100 then
+					humanoid.WalkSpeed = walkSpeedValue
+					walkSpeedInputBox.Text = tostring(walkSpeedValue)
+				else
+					humanoid.WalkSpeed = 16
+					walkSpeedInputBox.Text = "16"
+				end
+			else
+				warn("Humanoid not found for walkspeed!")
+			end
+		else
+			warn("Character not found for walkspeed!")
+		end
+	end
+	
+	local character = game:GetService("Players").LocalPlayer.Character
+	if character then
+		local humanoid = character:WaitForChild("Humanoid", 5)
+		if humanoid then
+			humanoid.WalkSpeed = 16
+			walkSpeedInputBox.Text = "16"
+		end
+	end
+	
+	walkSpeedInputBox.FocusLost:Connect(function(enterPressed)
+		local inputValue = tonumber(walkSpeedInputBox.Text)
+		if inputValue then
+			setWalkSpeed(inputValue)
+		else
+			walkSpeedInputBox.Text = "16"
+			setWalkSpeed(16)
+		end
+	end)
 end
 
-local function RTCZIU_fake_script() -- blocksEspButton.blocks esp script
-    local success, err = pcall(function()
-        local player = Players.LocalPlayer
-        local character = player.Character or player.CharacterAdded:Wait()
-        local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
-        
-        local spawnedBlocks = Workspace:WaitForChild("SpawnedBlocks", 5) or Workspace:FindFirstChild("SpawnedOres")
-        if not spawnedBlocks then
-            warn("Neither SpawnedBlocks nor SpawnedOres folder found!")
-            return
-        end
-        
-        local espFolder = Instance.new("Folder")
-        espFolder.Name = "BlockESP"
-        espFolder.Parent = game.CoreGui
-        
-        local espEnabled = false
-        local maxDistance = 500
-        local espParts = {}
-        
-        blocksEspButton.Text = "Blocks ESP: OFF"
-        
-        local oreColors = {
-            ["Tin"] = Color3.fromRGB(57, 59, 49),
-            ["Iron"] = Color3.fromRGB(130, 72, 31),
-            ["Lead"] = Color3.fromRGB(14, 12, 13),
-            ["Cobalt"] = Color3.fromRGB(26, 60, 99),
-            ["Aluminium"] = Color3.fromRGB(53, 53, 51),
-            ["Silver"] = Color3.fromRGB(48, 72, 79),
-            ["Uranium"] = Color3.fromRGB(0, 255, 0),
-            ["Vanadium"] = Color3.fromRGB(108, 22, 11),
-            ["Tungsten"] = Color3.fromRGB(14, 19, 12),
-            ["Gold"] = Color3.fromRGB(195, 152, 58),
-            ["Titanium"] = Color3.fromRGB(54, 35, 65),
-            ["Palladium"] = Color3.fromRGB(148, 111, 6),
-            ["Plutonium"] = Color3.fromRGB(18, 250, 255),
-            ["Mithril"] = Color3.fromRGB(33, 91, 53),
-            ["Thorium"] = Color3.fromRGB(26, 30, 22),
-            ["Iridium"] = Color3.fromRGB(110, 133, 130),
-            ["Adamantium"] = Color3.fromRGB(62, 125, 56),
-            ["Rhodium"] = Color3.fromRGB(179, 182, 174),
-            ["Unobtanium"] = Color3.fromRGB(255, 0, 255),
-            ["Molybdenum"] = Color3.fromRGB(100, 100, 100),
-            ["Topaz"] = Color3.fromRGB(69, 70, 13),
-            ["Emerald"] = Color3.fromRGB(2, 81, 0),
-            ["Sapphire"] = Color3.fromRGB(1, 3, 72),
-            ["Ruby"] = Color3.fromRGB(139, 0, 0),
-            ["Diamond"] = Color3.fromRGB(43, 110, 108),
-            ["Poudretteite"] = Color3.fromRGB(126, 21, 129),
-            ["Zultanite"] = Color3.fromRGB(97, 62, 48),
-            ["Grandidierite"] = Color3.fromRGB(19, 109, 47),
-            ["Musgravite"] = Color3.fromRGB(24, 31, 26),
-            ["Painite"] = Color3.fromRGB(85, 21, 26),
-        }
-        
-        local function createESP(part)
-            local mineId = part:GetAttribute("MineId") or part:GetAttribute("OreType") or part.Name or "Unknown"
-            local color = oreColors[mineId] or Color3.fromRGB(255, 255, 255)
-        
-            local box = Instance.new("BoxHandleAdornment")
-            box.Adornee = part
-            box.Parent = espFolder
-            box.AlwaysOnTop = true
-            box.ZIndex = 1
-            box.Size = part.Size
-            box.Transparency = 0.6
-            box.Color3 = color
-            box.Visible = false
-        
-            local billboard = Instance.new("BillboardGui")
-            billboard.Adornee = part
-            billboard.Parent = espFolder
-            billboard.Size = UDim2.new(0, 100, 0, 20)
-            billboard.StudsOffset = Vector3.new(0, part.Size.Y/2 + 1, 0)
-            billboard.AlwaysOnTop = true
-            billboard.Enabled = false
-        
-            local textLabel = Instance.new("TextLabel")
-            textLabel.Parent = billboard
-            textLabel.Size = UDim2.new(1, 0, 1, 0)
-            textLabel.BackgroundTransparency = 1
-            textLabel.Text = mineId
-            textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-            textLabel.TextStrokeTransparency = 0
-            textLabel.TextScaled = true
-        
-            espParts[part] = {box = box, billboard = billboard}
-        end
-        
-        local function setupExistingBlocks()
-            for _, block in ipairs(spawnedBlocks:GetChildren()) do
-                if block:IsA("BasePart") and block.Anchored then
-                    local successESP, errESP = pcall(createESP, block)
-                    if not successESP then
-                        warn("Failed to create ESP for block: " .. tostring(errESP))
-                    end
-                end
-            end
-        end
-        
-        setupExistingBlocks()
-        
-        spawnedBlocks.ChildAdded:Connect(function(child)
-            if child:IsA("BasePart") and child.Anchored then
-                task.wait(0.1)
-                local successESP, errESP = pcall(createESP, child)
-                if not successESP then
-                    warn("Failed to create ESP for new block: " .. tostring(errESP))
-                end
-            end
-        end)
-        
-        spawnedBlocks.ChildRemoved:Connect(function(child)
-            if espParts[child] then
-                espParts[child].box:Destroy()
-                espParts[child].billboard:Destroy()
-                espParts[child] = nil
-            end
-        end)
-        
-        RunService.Heartbeat:Connect(function()
-            if not humanoidRootPart then
-                character = player.Character or player.CharacterAdded:Wait()
-                humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-                if not humanoidRootPart then return end
-            end
-        
-            for part, esp in pairs(espParts) do
-                if part and part.Parent then
-                    if espEnabled then
-                        local distance = (humanoidRootPart.Position - part.Position).Magnitude
-                        local isVisible = distance <= maxDistance
-                        esp.box.Visible = isVisible
-                        esp.billboard.Enabled = isVisible
-                    else
-                        esp.box.Visible = false
-                        esp.billboard.Enabled = false
-                    end
-                end
-            end
-        end)
-        
-        blocksEspButton.MouseButton1Click:Connect(function()
-            espEnabled = not espEnabled
-            blocksEspButton.Text = espEnabled and "Blocks ESP: ON" or "Blocks ESP: OFF"
-        
-            for _, esp in pairs(espParts) do
-                if espEnabled then
-                    local distance = (humanoidRootPart.Position - esp.box.Adornee.Position).Magnitude
-                    local isVisible = distance <= maxDistance
-                    esp.box.Visible = isVisible
-                    esp.billboard.Enabled = isVisible
-                else
-                    esp.box.Visible = false
-                    esp.billboard.Enabled = false
-                end
-            end
-        end)
-        
-        player.CharacterAdded:Connect(function(newCharacter)
-            for part, esp in pairs(espParts) do
-                if esp.box then esp.box:Destroy() end
-                if esp.billboard then esp.billboard:Destroy() end
-            end
-            espParts = {}
-        
-            character = newCharacter
-            humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
-            setupExistingBlocks()
-        end)
-    end)
-    if not success then
-        warn("RTCZIU_fake_script failed: " .. tostring(err))
-    end
+local function RTCZIU_fake_script() -- blocksEspButton.blocks esp script 
+	local script = Instance.new('LocalScript', blocksEspButton)
+
+	local Workspace = game:GetService("Workspace")
+	local RunService = game:GetService("RunService")
+	local Players = game:GetService("Players")
+	
+	local player = Players.LocalPlayer
+	local character = player.Character or player.CharacterAdded:Wait()
+	local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
+	
+	local spawnedBlocks = Workspace:WaitForChild("SpawnedBlocks", 5) or Workspace:FindFirstChild("SpawnedOres")
+	if not spawnedBlocks then
+		warn("Neither SpawnedBlocks nor SpawnedOres folder found!")
+		return
+	end
+	
+	local espFolder = Instance.new("Folder")
+	espFolder.Name = "BlockESP"
+	espFolder.Parent = game.CoreGui
+	
+	local espEnabled = false
+	local maxDistance = 500
+	local espParts = {}
+	
+	blocksEspButton.Text = "Blocks ESP: OFF"
+	
+	local oreColors = {
+		["Tin"] = Color3.fromRGB(57, 59, 49),
+		["Iron"] = Color3.fromRGB(130, 72, 31),
+		["Lead"] = Color3.fromRGB(14, 12, 13),
+		["Cobalt"] = Color3.fromRGB(26, 60, 99),
+		["Aluminium"] = Color3.fromRGB(53, 53, 51),
+		["Silver"] = Color3.fromRGB(48, 72, 79),
+		["Uranium"] = Color3.fromRGB(0, 255, 0),
+		["Vanadium"] = Color3.fromRGB(108, 22, 11),
+		["Tungsten"] = Color3.fromRGB(14, 19, 12),
+		["Gold"] = Color3.fromRGB(195, 152, 58),
+		["Titanium"] = Color3.fromRGB(54, 35, 65),
+		["Palladium"] = Color3.fromRGB(148, 111, 6),
+		["Plutonium"] = Color3.fromRGB(18, 250, 255),
+		["Mithril"] = Color3.fromRGB(33, 91, 53),
+		["Thorium"] = Color3.fromRGB(26, 30, 22),
+		["Iridium"] = Color3.fromRGB(110, 133, 130),
+		["Adamantium"] = Color3.fromRGB(62, 125, 56),
+		["Rhodium"] = Color3.fromRGB(179, 182, 174),
+		["Unobtanium"] = Color3.fromRGB(255, 0, 255),
+		["Molybdenum"] = Color3.fromRGB(100, 100, 100),
+		["Topaz"] = Color3.fromRGB(69, 70, 13),
+		["Emerald"] = Color3.fromRGB(2, 81, 0),
+		["Sapphire"] = Color3.fromRGB(1, 3, 72),
+		["Ruby"] = Color3.fromRGB(139, 0, 0),
+		["Diamond"] = Color3.fromRGB(43, 110, 108),
+		["Poudretteite"] = Color3.fromRGB(126, 21, 129),
+		["Zultanite"] = Color3.fromRGB(97, 62, 48),
+		["Grandidierite"] = Color3.fromRGB(19, 109, 47),
+		["Musgravite"] = Color3.fromRGB(24, 31, 26),
+		["Painite"] = Color3.fromRGB(85, 21, 26),
+	}
+	
+	local function createESP(part)
+		local mineId = part:GetAttribute("MineId") or part:GetAttribute("OreType") or part.Name or "Unknown"
+		local color = oreColors[mineId] or Color3.fromRGB(255, 255, 255)
+	
+		local box = Instance.new("BoxHandleAdornment")
+		box.Adornee = part
+		box.Parent = espFolder
+		box.AlwaysOnTop = true
+		box.ZIndex = 1
+		box.Size = part.Size
+		box.Transparency = 0.6
+		box.Color3 = color
+		box.Visible = false
+	
+		local billboard = Instance.new("BillboardGui")
+		billboard.Adornee = part
+		billboard.Parent = espFolder
+		billboard.Size = UDim2.new(0, 100, 0, 20)
+		billboard.StudsOffset = Vector3.new(0, part.Size.Y/2 + 1, 0)
+		billboard.AlwaysOnTop = true
+		billboard.Enabled = false
+	
+		local textLabel = Instance.new("TextLabel")
+		textLabel.Parent = billboard
+		textLabel.Size = UDim2.new(1, 0, 1, 0)
+		textLabel.BackgroundTransparency = 1
+		textLabel.Text = mineId
+		textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+		textLabel.TextStrokeTransparency = 0
+		textLabel.TextScaled = true
+	
+		espParts[part] = {box = box, billboard = billboard}
+	end
+	
+	local function setupExistingBlocks()
+		for _, block in ipairs(spawnedBlocks:GetChildren()) do
+			if block:IsA("BasePart") and block.Anchored then
+				local success, err = pcall(createESP, block)
+				if not success then
+					warn("Failed to create ESP for block: " .. tostring(err))
+				end
+			end
+		end
+	end
+	
+	setupExistingBlocks()
+	
+	spawnedBlocks.ChildAdded:Connect(function(child)
+		if child:IsA("BasePart") and child.Anchored then
+			task.wait(0.1)
+			local success, err = pcall(createESP, child)
+			if not success then
+				warn("Failed to create ESP for new block: " .. tostring(err))
+			end
+		end
+	end)
+	
+	spawnedBlocks.ChildRemoved:Connect(function(child)
+		if espParts[child] then
+			espParts[child].box:Destroy()
+			espParts[child].billboard:Destroy()
+			espParts[child] = nil
+		end
+	end)
+	
+	RunService.Heartbeat:Connect(function()
+		if not humanoidRootPart then
+			character = player.Character or player.CharacterAdded:Wait()
+			humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+			if not humanoidRootPart then return end
+		end
+	
+		for part, esp in pairs(espParts) do
+			if part and part.Parent then
+				if espEnabled then
+					local distance = (humanoidRootPart.Position - part.Position).Magnitude
+					local isVisible = distance <= maxDistance
+					esp.box.Visible = isVisible
+					esp.billboard.Enabled = isVisible
+				else
+					esp.box.Visible = false
+					esp.billboard.Enabled = false
+				end
+			end
+		end
+	end)
+	
+	blocksEspButton.MouseButton1Click:Connect(function()
+		espEnabled = not espEnabled
+		blocksEspButton.Text = espEnabled and "Blocks ESP: ON" or "Blocks ESP: OFF"
+	
+		for _, esp in pairs(espParts) do
+			if espEnabled then
+				local distance = (humanoidRootPart.Position - esp.box.Adornee.Position).Magnitude
+				local isVisible = distance <= maxDistance
+				esp.box.Visible = isVisible
+				esp.billboard.Enabled = isVisible
+			else
+				esp.box.Visible = false
+				esp.billboard.Enabled = false
+			end
+		end
+	end)
+	
+	player.CharacterAdded:Connect(function(newCharacter)
+		for part, esp in pairs(espParts) do
+			if esp.box then esp.box:Destroy() end
+			if esp.billboard then esp.billboard:Destroy() end
+		end
+		espParts = {}
+	
+		character = newCharacter
+		humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
+		setupExistingBlocks()
+	end)
 end
 
-local function OQBZD_fake_script() -- Frame.right-shift
-    local success, err = pcall(function()
-        local frame = Frame
-        
-        frame.Visible = true
-        
-        local function toggleFrameVisibility(input)
-            if input.UserInputType == Enum.UserInputType.Keyboard then
-                if input.KeyCode == Enum.KeyCode.RightShift then
-                    frame.Visible = not frame.Visible
-                end
-            end
-        end
-        
-        UserInputService.InputBegan:Connect(toggleFrameVisibility)
-    end)
-    if not success then
-        warn("OQBZD_fake_script failed: " .. tostring(err))
-    end
+local function OQBZD_fake_script() -- Frame.right-shift 
+	local script = Instance.new('LocalScript', Frame)
+
+	local frame = script.Parent
+	local UserInputService = game:GetService("UserInputService")
+	
+	frame.Visible = true
+	
+	local function toggleFrameVisibility(input)
+		if input.UserInputType == Enum.UserInputType.Keyboard then
+			if input.KeyCode == Enum.KeyCode.RightShift then
+				frame.Visible = not frame.Visible
+			end
+		end
+	end
+	
+	UserInputService.InputBegan:Connect(toggleFrameVisibility)
 end
 
-local function VIJPO_fake_script() -- c4shop.c4 shop tp
-    local success, err = pcall(function()
-        local player = Players.LocalPlayer
-        local button = c4shop
-        local targetPosition = Vector3.new(387.988403, 75.3827286, -751.247314)
-        
-        button.MouseButton1Click:Connect(function()
-            local character = player.Character or player.CharacterAdded:Wait()
-            local hrp = character:FindFirstChild("HumanoidRootPart")
-            if hrp then
-                hrp.CFrame = CFrame.new(targetPosition)
-            else
-                warn("HumanoidRootPart not found for C4 shop teleport!")
-            end
-        end)
-    end)
-    if not success then
-        warn("VIJPO_fake_script failed: " .. tostring(err))
-    end
+local function VIJPO_fake_script() -- c4shop.c4 shop tp 
+	local script = Instance.new('LocalScript', c4shop)
+
+	local player = game:GetService("Players").LocalPlayer
+	local button = script.Parent
+	
+	local targetPosition = Vector3.new(387.988403, 75.3827286, -751.247314)
+	
+	button.MouseButton1Click:Connect(function()
+		local character = player.Character or player.CharacterAdded:Wait()
+		local hrp = character:FindFirstChild("HumanoidRootPart")
+		if hrp then
+			hrp.CFrame = CFrame.new(targetPosition)
+		else
+			warn("HumanoidRootPart not found for C4 shop teleport!")
+		end
+	end)
 end
 
-local function ETDSH_fake_script() -- resetc4button.mobile reset c4 button
-    local success, err = pcall(function()
-        local camera = Workspace.CurrentCamera
-        local button = resetc4button
-        local character = player.Character or player.CharacterAdded:Wait()
-        
-        local savedCFrame
-        local savedCameraCFrame
-        local savedWalkSpeed
-        
-        local function setControlModeToJoystick()
-            local successMode, errMode = pcall(function()
-                local playerScripts = player:WaitForChild("PlayerScripts", 5)
-                local controlModule = playerScripts:FindFirstChild("ControlModule")
-                if controlModule then
-                    local controlState = controlModule:GetAttribute("ControlState") or "Keyboard"
-                    if controlState ~= "Joystick" then
-                        controlModule:SetAttribute("ControlState", "Joystick")
-                        warn("Forced ControlState to Joystick")
-                    end
-                else
-                    warn("ControlModule not found!")
-                    -- Tentar simular clique na interface de configurações
-                    local successClick, errClick = pcall(function()
-                        VirtualInputManager:SendTouchEvent(1, Enum.UserInputState.Begin, Vector2.new(0.95, 0.05)) -- Botão de configurações (canto superior direito)
-                        task.wait(0.1)
-                        VirtualInputManager:SendTouchEvent(1, Enum.UserInputState.End, Vector2.new(0.95, 0.05))
-                        task.wait(0.5)
-                        VirtualInputManager:SendTouchEvent(2, Enum.UserInputState.Begin, Vector2.new(0.5, 0.6)) -- Selecionar "Joystick" no menu
-                        task.wait(0.1)
-                        VirtualInputManager:SendTouchEvent(2, Enum.UserInputState.End, Vector2.new(0.5, 0.6))
-                    end)
-                    if not successClick then
-                        warn("Failed to simulate settings click: " .. tostring(errClick))
-                    end
-                end
-            end)
-            if not successMode then
-                warn("Failed to set ControlState: " .. tostring(errMode))
-            end
-        end
-        
-        local function resetC4()
-            character = player.Character or player.CharacterAdded:Wait()
-            local root = character:FindFirstChild("HumanoidRootPart")
-            local humanoid = character:FindFirstChildOfClass("Humanoid")
-        
-            if not (root and humanoid) then
-                warn("Humanoid or HumanoidRootPart not found for C4 reset!")
-                return
-            end
-        
-            savedCFrame = root.CFrame
-            savedCameraCFrame = camera.CFrame
-            savedWalkSpeed = humanoid.WalkSpeed
-        
-            humanoid.Health = 0
-        
-            player.CharacterAdded:Wait()
-            task.wait(3) -- Aumentado para 3 segundos para inicialização completa no mobile
-        
-            character = player.Character or player.CharacterAdded:Wait()
-            local newRoot = character:WaitForChild("HumanoidRootPart", 5)
-            local newHumanoid = character:WaitForChild("Humanoid", 5)
-        
-            if newRoot and newHumanoid then
-                newRoot.CFrame = savedCFrame
-                newHumanoid.WalkSpeed = savedWalkSpeed
-                
-                -- Forçar câmera imediatamente
-                camera.CameraType = Enum.CameraType.Custom
-                camera.CameraSubject = newHumanoid
-                camera.CFrame = savedCameraCFrame
-                
-                -- Loop para garantir que a câmera não seja sobrescrita
-                local cameraFixConnection
-                local fixAttempts = 0
-                local maxFixAttempts = 90 -- Aproximadamente 3 segundos a 30 FPS
-                cameraFixConnection = RunService.RenderStepped:Connect(function()
-                    if fixAttempts >= maxFixAttempts then
-                        cameraFixConnection:Disconnect()
-                        return
-                    end
-                    if camera.CameraType ~= Enum.CameraType.Custom or camera.CameraSubject ~= newHumanoid then
-                        camera.CameraType = Enum.CameraType.Custom
-                        camera.CameraSubject = newHumanoid
-                        camera.CFrame = savedCameraCFrame
-                    end
-                    fixAttempts = fixAttempts + 1
-                end)
-                
-                -- Forçar estado de movimento para ativar controles mobile
-                newHumanoid:ChangeState(Enum.HumanoidStateType.Running)
-                
-                -- Forçar modo de movimento para "Joystick"
-                setControlModeToJoystick()
-                
-                -- Simular toque para "acordar" joystick mobile
-                local successTouch, errTouch = pcall(function()
-                    VirtualInputManager:SendTouchEvent(1, Enum.UserInputState.Begin, Vector2.new(0.4, 0.85))
-                    task.wait(0.1)
-                    VirtualInputManager:SendTouchEvent(1, Enum.UserInputState.End, Vector2.new(0.4, 0.85))
-                end)
-                if not successTouch then
-                    warn("Failed to simulate touch: " .. tostring(errTouch))
-                end
-                
-                -- Delay antes da tecla "2"
-                task.wait(0.5)
-                local successKey, errKey = pcall(function()
-                    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Two, false, game)
-                    task.wait(0.1)
-                    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Two, false, game)
-                end)
-                if not successKey then
-                    warn("Failed to simulate key press: " .. tostring(errKey))
-                else
-                    warn("C4 reset completed successfully")
-                end
-            else
-                warn("Failed to restore character after C4 reset!")
-            end
-        end
-        
-        button.MouseButton1Click:Connect(function()
-            local success, err = pcall(resetC4)
-            if not success then
-                warn("C4 reset failed: " .. tostring(err))
-            end
-        end)
-        
-        UserInputService.InputBegan:Connect(function(input, gameProcessed)
-            if gameProcessed then return end
-            if input.KeyCode == Enum.KeyCode.F then
-                local success, err = pcall(resetC4)
-                if not success then
-                    warn("C4 reset failed: " .. tostring(err))
-                end
-            end
-        end)
-    end)
-    if not success then
-        warn("ETDSH_fake_script failed: " .. tostring(err))
-    end
+local function ETDSH_fake_script() -- resetc4button.mobile reset c4 button 
+	local script = Instance.new('LocalScript', resetc4button)
+
+	local Players = game:GetService("Players")
+	local UserInputService = game:GetService("UserInputService")
+	local VirtualInputManager = game:GetService("VirtualInputManager")
+	local RunService = game:GetService("RunService")
+	local camera = workspace.CurrentCamera
+	
+	local player = Players.LocalPlayer
+	local button = script.Parent
+	local character = player.Character or player.CharacterAdded:Wait()
+	
+	local savedCFrame
+	local savedCameraCFrame
+	local savedWalkSpeed
+	
+	local function resetC4()
+		character = player.Character or player.CharacterAdded:Wait()
+		local root = character:FindFirstChild("HumanoidRootPart")
+		local humanoid = character:FindFirstChildOfClass("Humanoid")
+	
+		if not (root and humanoid) then
+			warn("Humanoid or HumanoidRootPart not found for C4 reset!")
+			return
+		end
+	
+		savedCFrame = root.CFrame
+		savedCameraCFrame = camera.CFrame
+		savedWalkSpeed = humanoid.WalkSpeed
+	
+		humanoid.Health = 0
+	
+		player.CharacterAdded:Wait()
+		task.wait(2) -- Aumentado para 2 segundos para inicialização completa no mobile
+	
+		character = player.Character or player.CharacterAdded:Wait()
+		local newRoot = character:WaitForChild("HumanoidRootPart", 5)
+		local newHumanoid = character:WaitForChild("Humanoid", 5)
+	
+		if newRoot and newHumanoid then
+			newRoot.CFrame = savedCFrame
+			newHumanoid.WalkSpeed = savedWalkSpeed
+			
+			-- Forçar câmera imediatamente
+			camera.CameraType = Enum.CameraType.Custom
+			camera.CameraSubject = newHumanoid
+			camera.CFrame = savedCameraCFrame
+			
+			-- Loop para garantir que a câmera não seja sobrescrita
+			local cameraFixConnection
+			local fixAttempts = 0
+			local maxFixAttempts = 60 -- Aproximadamente 2 segundos a 30 FPS
+			cameraFixConnection = RunService.RenderStepped:Connect(function()
+				if fixAttempts >= maxFixAttempts then
+					cameraFixConnection:Disconnect()
+					return
+				end
+				if camera.CameraType ~= Enum.CameraType.Custom or camera.CameraSubject ~= newHumanoid then
+					camera.CameraType = Enum.CameraType.Custom
+					camera.CameraSubject = newHumanoid
+					camera.CFrame = savedCameraCFrame
+				end
+				fixAttempts = fixAttempts + 1
+			end)
+			
+			-- Forçar estado de movimento para ativar controles mobile
+			newHumanoid:ChangeState(Enum.HumanoidStateType.Running)
+			
+			-- Tentar forçar modo de movimento "Padrão (Direcional Analógico Dinâmico)"
+			local successMode, errMode = pcall(function()
+				local playerScripts = player:WaitForChild("PlayerScripts", 5)
+				local controlModule = playerScripts:FindFirstChild("ControlModule")
+				if controlModule then
+					-- Tentar forçar o modo de movimento para "Joystick"
+					local controlState = controlModule:GetAttribute("ControlState") or "Keyboard"
+					if controlState ~= "Joystick" then
+						controlModule:SetAttribute("ControlState", "Joystick")
+						warn("Forced ControlState to Joystick")
+					end
+				else
+					warn("ControlModule not found!")
+				end
+			end)
+			if not successMode then
+				warn("Failed to set ControlState: " .. tostring(errMode))
+			end
+			
+			-- Simular toque para "acordar" joystick mobile
+			task.wait(0.2)
+			local touchId = 1
+			local successTouch, errTouch = pcall(function()
+				VirtualInputManager:SendTouchEvent(touchId, Enum.UserInputState.Begin, Vector2.new(0.5, 0.8))
+				task.wait(0.1)
+				VirtualInputManager:SendTouchEvent(touchId, Enum.UserInputState.End, Vector2.new(0.5, 0.8))
+			end)
+			if not successTouch then
+				warn("Failed to simulate touch: " .. tostring(errTouch))
+			end
+			
+			-- Delay antes da tecla "2"
+			task.wait(0.5)
+			local successKey, errKey = pcall(function()
+				VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Two, false, game)
+				task.wait(0.1)
+				VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Two, false, game)
+			end)
+			if not successKey then
+				warn("Failed to simulate key press: " .. tostring(errKey))
+			else
+				warn("C4 reset completed successfully")
+			end
+		else
+			warn("Failed to restore character after C4 reset!")
+		end
+	end
+	
+	button.MouseButton1Click:Connect(function()
+		local success, err = pcall(resetC4)
+		if not success then
+			warn("C4 reset failed: " .. tostring(err))
+		end
+	end)
+	
+	UserInputService.InputBegan:Connect(function(input, gameProcessed)
+		if gameProcessed then return end
+		if input.KeyCode == Enum.KeyCode.F then
+			local success, err = pcall(resetC4)
+			if not success then
+				warn("C4 reset failed: " .. tostring(err))
+			end
+		end
+	end)
 end
 
--- Inicialização dos scripts
+-- Inicialização segura dos scripts
 local function initializeScripts()
-    local success, err = pcall(function()
-        INPMCR_fake_script()
-        PIZNK_fake_script()
-        UKNKUIM_fake_script()
-        FULE_fake_script()
-        KKQXR_fake_script()
-        TTDVCH_fake_script()
-        SFJYWQ_fake_script()
-        RTCZIU_fake_script()
-        OQBZD_fake_script()
-        VIJPO_fake_script()
-        ETDSH_fake_script()
-    end)
-    if not success then
-        warn("Failed to initialize scripts: " .. tostring(err))
-    end
+	local success, err = pcall(function()
+		coroutine.wrap(INPMCR_fake_script)()
+		coroutine.wrap(PIZNK_fake_script)()
+		coroutine.wrap(UKNKUIM_fake_script)()
+		coroutine.wrap(FULE_fake_script)()
+		coroutine.wrap(KKQXR_fake_script)()
+		coroutine.wrap(TTDVCH_fake_script)()
+		coroutine.wrap(SFJYWQ_fake_script)()
+		coroutine.wrap(RTCZIU_fake_script)()
+		coroutine.wrap(OQBZD_fake_script)()
+		coroutine.wrap(VIJPO_fake_script)()
+		coroutine.wrap(ETDSH_fake_script)()
+	end)
+	if not success then
+		warn("Failed to initialize scripts: " .. tostring(err))
+	end
 end
 
 -- Executar inicialização com verificação de erros
 local successInit, errInit = pcall(initializeScripts)
 if successInit then
-    warn("Mining GUI loaded successfully at: " .. os.date())
+	warn("Mining GUI loaded successfully at: " .. os.date())
 else
-    warn("Failed to load Mining GUI: " .. tostring(errInit))
+	warn("Failed to load Mining GUI: " .. tostring(errInit))
 end
 ```
